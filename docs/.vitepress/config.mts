@@ -15,6 +15,7 @@ export default defineConfig({
   },
 
   head: [
+    ['meta', { name: 'google-site-verification', content: 'Zrn6PC3LAN4uHXbpjsLc8XGlfV6bMoXQVeEu7owb6Og' }],
     ['meta', { name: 'theme-color', content: '#b45309' }],
     ['meta', { name: 'keywords', content: 'Hexa Framework, hexa_core, RedM framework, RedM roleplay, RDR2 roleplay server, RedM scripts, FXServer, ESX style framework, RedM core' }],
     ['meta', { name: 'robots', content: 'index, follow' }],
