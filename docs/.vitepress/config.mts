@@ -1,15 +1,41 @@
 import { defineConfig } from 'vitepress'
 
+const SITE_URL = 'https://hexa-development.github.io/hexa-docs/'
+
 export default defineConfig({
   title: 'Hexa Framework',
-  description: 'เอกสารประกอบการใช้งาน hexa_core — เฟรมเวิร์กหลักสำหรับเซิร์ฟเวอร์ RedM',
+  description: 'Hexa Framework (hexa_core) documentation - the core framework for RedM roleplay servers: players, jobs, items, money, callbacks, and permissions with an ESX-style structure',
   lang: 'th-TH',
   base: '/hexa-docs/',
   lastUpdated: true,
   cleanUrls: true,
 
+  sitemap: {
+    hostname: SITE_URL
+  },
+
   head: [
-    ['meta', { name: 'theme-color', content: '#b45309' }]
+    ['meta', { name: 'theme-color', content: '#b45309' }],
+    ['meta', { name: 'keywords', content: 'Hexa Framework, hexa_core, RedM framework, RedM roleplay, RDR2 roleplay server, RedM scripts, FXServer, ESX style framework, RedM core' }],
+    ['meta', { name: 'robots', content: 'index, follow' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: 'Hexa Framework' }],
+    ['meta', { property: 'og:title', content: 'Hexa Framework - RedM roleplay framework documentation' }],
+    ['meta', { property: 'og:description', content: 'Documentation for Hexa Framework (hexa_core) - the core framework for RedM roleplay servers' }],
+    ['meta', { property: 'og:url', content: SITE_URL }],
+    ['meta', { name: 'twitter:card', content: 'summary' }],
+    ['meta', { name: 'twitter:title', content: 'Hexa Framework - RedM roleplay framework documentation' }],
+    ['script', { type: 'application/ld+json' }, JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Hexa Framework',
+      alternateName: 'hexa_core',
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'RedM (FXServer)',
+      description: 'The core framework for RedM roleplay servers - players, jobs, items, money, callbacks, and permissions with an ESX-style structure',
+      url: SITE_URL,
+      sameAs: ['https://github.com/hexa-development/hexa_core']
+    })]
   ],
 
   themeConfig: {
@@ -77,8 +103,8 @@ export default defineConfig({
     lastUpdatedText: 'อัปเดตล่าสุด',
 
     footer: {
-      message: 'เอกสารของ Hexa Framework สำหรับ RedM',
-      copyright: '© Hexa Development'
+      message: 'Hexa Framework documentation for RedM',
+      copyright: '© Hexa Framework'
     }
   }
 })
