@@ -1,33 +1,35 @@
 # hexa-docs
 
-เว็บไซต์เอกสาร (documentation) ของ [hexa_core](https://github.com/hexa-development/hexa_core) — เฟรมเวิร์กหลักสำหรับเซิร์ฟเวอร์ RedM
+Documentation website for [hexa_core](https://github.com/hexa-development/hexa_core) — the core framework for RedM roleplay servers.
 
-สร้างด้วย [VitePress](https://vitepress.dev/) (Vue.js) สไตล์เดียวกับ [ESX docs](https://docs.esx-framework.org/)
+Built with [VitePress](https://vitepress.dev/) (Vue.js), in the style of the [ESX docs](https://docs.esx-framework.org/).
 
-## พัฒนา (local dev)
+**Live site:** [hexa-development.github.io/hexa-docs](https://hexa-development.github.io/hexa-docs/)
+
+## Local development
 
 ```bash
 npm install
-npm run docs:dev      # เปิด dev server ที่ http://localhost:5173
+npm run docs:dev      # dev server at http://localhost:5173
 ```
 
 ## Build
 
 ```bash
-npm run docs:build    # ผลลัพธ์อยู่ที่ docs/.vitepress/dist
-npm run docs:preview  # ดูผลลัพธ์ที่ build แล้ว
+npm run docs:build    # output in docs/.vitepress/dist
+npm run docs:preview  # preview the built site
 ```
 
 ## Deploy
 
-push ขึ้น branch `main` แล้ว GitHub Actions จะ build + deploy ขึ้น GitHub Pages ให้อัตโนมัติ (ดู `.github/workflows/deploy.yml`)
+Push to `main` and GitHub Actions builds and deploys to GitHub Pages automatically (see `.github/workflows/deploy.yml`).
 
-## โครงสร้าง
+## Structure
 
 ```
 docs/
-├── .vitepress/config.mts   # การตั้งค่าเว็บ (nav, sidebar, theme)
-├── index.md                # หน้าแรก (hero + features)
-├── guide/                  # คู่มือการใช้งาน
-└── api/                    # API Reference
+├── .vitepress/config.mts   # site config (nav, sidebar, theme)
+├── index.md                # landing page (hero + features)
+├── guide/                  # user guide
+└── api/                    # API reference
 ```
