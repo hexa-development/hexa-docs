@@ -327,8 +327,8 @@ Config.Player.PlayerDefaults = {
 ```
 
 ::: tip weight and slots live here, not in the database
-`weight = 10000` and `slots = 10000` are read from this table on every load. Inventory size is
-intentionally percentage based: an item's weight is a percentage of the 100 a character can carry. Runtime overrides
+`weight = 100` and `slots = 25` are read from this table on every load. Inventory size is intentionally
+percentage based: an item's weight is a percentage of the 100 a character can carry. Runtime overrides
 go through `Core.SetMaxWeight` and `Core.SetMaxSlots`.
 :::
 

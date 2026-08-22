@@ -393,7 +393,7 @@ Deprecated spelling: `Core.ChangeWeight`.
 Core.SetMaxSlots(source, slots)
 ```
 
-Sets the number of satchel slots. `Config.Player.PlayerDefaults.slots` ships at `10000`. Returns nothing.
+Sets the number of satchel slots, default `25`. Returns nothing.
 
 Deprecated spelling: `Core.ChangeSlots`.
 

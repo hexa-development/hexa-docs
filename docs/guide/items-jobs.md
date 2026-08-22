@@ -454,7 +454,7 @@ local onlyCount = Core.GetDutyCount('medic')
 
 ## Weight and slots
 
-Capacity defaults come from `Config.Player.PlayerDefaults`: `weight = 10000` and `slots = 10000`. Weight
+Capacity defaults come from `Config.Player.PlayerDefaults`: `weight = 100` and `slots = 25`. Weight
 is a percentage of the satchel, so an item of weight `1` costs one percent of the bag.
 
 ```lua

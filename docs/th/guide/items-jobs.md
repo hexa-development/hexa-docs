@@ -445,7 +445,7 @@ local onlyCount = Core.GetDutyCount('medic')
 
 ## น้ำหนักและช่องเก็บของ
 
-ค่าความจุเริ่มต้นมาจาก `Config.Player.PlayerDefaults` คือ `weight = 10000` และ `slots = 10000` น้ำหนักคิด
+ค่าความจุเริ่มต้นมาจาก `Config.Player.PlayerDefaults` คือ `weight = 100` และ `slots = 25` น้ำหนักคิด
 เป็นเปอร์เซ็นต์ของกระเป๋า ของที่ weight `1` จึงกินความจุหนึ่งเปอร์เซ็นต์
 
 ```lua
