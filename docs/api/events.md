@@ -3,7 +3,7 @@
 Every event `hexa_core` fires or listens for, with its direction, its payload, and - the point of
 this page - whether a player's game client is able to fire it.
 
-In FiveM/FXServer there are two ways to register a handler, and they are not equivalent:
+In FXServer there are two ways to register a handler, and they are not equivalent:
 
 ```lua
 -- only code running on this same side can reach this handler

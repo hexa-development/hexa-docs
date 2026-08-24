@@ -68,7 +68,7 @@ end)
 
 ### The items table
 
-Straight `esx_core` shape. Five columns, nothing more.
+Five columns, nothing more.
 
 | Column | Type | Meaning |
 | --- | --- | --- |
@@ -131,7 +131,7 @@ and `medic`. Every insert is `INSERT IGNORE`, so re-running the installer never 
 
 ### Item entries
 
-Every row is expanded into a full entry, because the ESX table has no column for the fields the
+Every row is expanded into a full entry, because the table has no column for the fields the
 inventory needs:
 
 ```lua
@@ -153,8 +153,8 @@ The seeded labels are Thai, which is why `label` reads the way it does above; th
 always the English identifier and that is what code refers to.
 
 `image` follows the convention `<name>.png`. `useable = true` here only means "not blocked"; whether
-using it actually does something is decided by `Core.CreateUseableItem`, exactly like
-`ESX.RegisterUsableItem`. `hexa_inventory` additionally reads `description` and `combinable` off an
+using it actually does something is decided by `Core.CreateUseableItem`. `hexa_inventory`
+additionally reads `description` and `combinable` off an
 entry when they are present, so a runtime registration may set them.
 
 Weapons come out with `type = 'weapon'` and `unique = true`, one gun per slot. Money items
@@ -307,7 +307,7 @@ batch before sending it, or register one at a time when the input is not fully u
 
 ## The export surface
 
-The catalogue verbs are also exported under their original `qb`/`rsg` names, permanently, so ported
+The catalogue verbs are also exported under their original `rsg` names, permanently, so ported
 scripts drop in unmodified:
 
 ```lua

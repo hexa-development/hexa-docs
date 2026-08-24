@@ -2,7 +2,7 @@
 
 Documentation website for [hexa_core](https://github.com/hexa-development/hexa_core) — the core framework for RedM roleplay servers.
 
-Built with [VitePress](https://vitepress.dev/) (Vue.js), in the style of the [ESX docs](https://docs.esx-framework.org/).
+Built with [VitePress](https://vitepress.dev/) (Vue.js).
 
 **Live site:** [hexa-development.github.io/hexa-docs](https://hexa-development.github.io/hexa-docs/)
 

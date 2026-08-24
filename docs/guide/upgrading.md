@@ -267,7 +267,7 @@ is called on.
 
 ## Exports that are kept permanently
 
-The export surface is the one place where the old verbs stay forever. Ported qb/rsg scripts call
+The export surface is the one place where the old verbs stay forever. Ported `rsg-core` scripts call
 `exports['hexa_core']:AddItem(...)` on the catalogue, and rewriting every one of them was not worth it.
 
 ```lua

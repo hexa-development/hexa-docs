@@ -534,7 +534,7 @@ Player.SetJobDuty(true)
 `HexaCore:Server:OnJobUpdate` and `HexaCore:Client:OnJobUpdate` and syncs the player.
 
 `Player.SetGang(gang, grade)` is a documented no-op that always returns `false`. This server has no
-gang system; the method exists because the qb/rsg bridge calls it.
+gang system; the method exists because the `rsg-core` bridge calls it.
 
 ## Permissions
 

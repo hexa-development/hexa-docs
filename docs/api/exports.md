@@ -51,8 +51,8 @@ The same split applies to `RemoveItem`: the export deletes the definition from t
 On the core object the catalogue verbs were renamed in 3.0 so they can never be confused again -
 `Core.RegisterItem`, `Core.UnregisterItem`, `Core.RegisterItems`, `Core.UpdateItemDefinition`. The
 **export names were deliberately left alone**. `AddItem`, `AddItems`, `UpdateItem` and `RemoveItem`
-keep their old spelling permanently, because that is the shape ported qb-core and rsg-core scripts
-already call, and they should drop into this server without an edit. The same holds for the job
+keep their old spelling permanently, because that is the shape ported `rsg-core` scripts already
+call, and they should drop into this server without an edit. The same holds for the job
 exports.
 
 ---
@@ -275,7 +275,7 @@ local rows = exports['hexa_core']:EncodeInventory(Player.PlayerData.items)
 `EncodeInventory` takes an in-memory slot table and returns a sorted array of
 `{ name, amount, slot, info }`, skipping weapons and anything with an amount of zero or less.
 `DecodeInventory(raw)` takes the raw column value - string or already-decoded table - and returns
-the same array shape. It reads the current array format, the older array format, and the legacy ESX
+the same array shape. It reads the current array format, the older array format, and the legacy
 `{ name = count }` format.
 
 #### EncodeLoadout / DecodeLoadout
@@ -532,7 +532,7 @@ than something you read off a cached core object.
 
 The 3.0 flattening renamed a great many things on the core object. It renamed almost nothing on the
 export surface, and that is deliberate: exports are the boundary that third-party and ported scripts
-sit on, so breaking them would break every qb-core and rsg-core port on the server at once.
+sit on, so breaking them would break every ported script on the server at once.
 
 | Export (unchanged)                    | Core object (3.0)              |
 | ------------------------------------- | ------------------------------ |
@@ -565,8 +565,7 @@ No export was deleted in 3.0. Two areas changed underneath while keeping their p
   `deletePromptGroup` all still exist with unchanged signatures, and `hexa_core` forwards to
   `hexa_interaction` internally. A caller written against 2.x needs no edit.
 - **On-screen text** still ships as `DrawText`, `ChangeText`, `HideText` and `KeyPressed`. The
-  implementation uses the RDR3 `CreateVarString` / `DisplayText` path rather than any GTA-V text
-  pipeline.
+  implementation uses the RDR3 `CreateVarString` / `DisplayText` path throughout.
 
 ### New in 3.0
 

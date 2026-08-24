@@ -78,7 +78,7 @@ const thApi = [
 export default defineConfig({
   title: 'Hexa Framework',
   description:
-    'Hexa Framework (hexa_core) documentation - the core framework for RedM roleplay servers: players, jobs, items, money, callbacks, and permissions with an ESX-style structure',
+    'Hexa Framework (hexa_core) documentation - the core framework for RedM roleplay servers: players, jobs, items, money, callbacks, and permissions in one flat API',
   base: '/hexa-docs/',
   lastUpdated: true,
   cleanUrls: true,
@@ -88,7 +88,7 @@ export default defineConfig({
   head: [
     ['meta', { name: 'google-site-verification', content: 'Zrn6PC3LAN4uHXbpjsLc8XGlfV6bMoXQVeEu7owb6Og' }],
     ['meta', { name: 'theme-color', content: '#b45309' }],
-    ['meta', { name: 'keywords', content: 'Hexa Framework, hexa_core, RedM framework, RedM roleplay, RDR2 roleplay server, RedM scripts, FXServer, ESX style framework, RedM core' }],
+    ['meta', { name: 'keywords', content: 'Hexa Framework, hexa_core, RedM framework, RedM roleplay, RDR2 roleplay server, RedM scripts, FXServer, RDR3, RedM core' }],
     ['meta', { name: 'robots', content: 'index, follow' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'Hexa Framework' }],
@@ -103,7 +103,7 @@ export default defineConfig({
       alternateName: 'hexa_core',
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'RedM (FXServer)',
-      description: 'The core framework for RedM roleplay servers - players, jobs, items, money, callbacks, and permissions with an ESX-style structure',
+      description: 'The core framework for RedM roleplay servers - players, jobs, items, money, callbacks, and permissions in one flat API',
       url: SITE_URL,
       sameAs: [REPO]
     })]

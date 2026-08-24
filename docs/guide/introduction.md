@@ -35,27 +35,27 @@ Inventory operations are delegated to `hexa_inventory`. Every call site in `hexa
 inventory resource is actually started and degrades to a safe return value if it is not, so a stopped
 inventory never turns into a Lua error inside the core.
 
-## Why the database is ESX-shaped
+## How the database is shaped
 
-Characters live in a `users` table keyed by `identifier`, with the ESX column names: `accounts`,
+Characters live in a `users` table keyed by `identifier`, one column per concern: `accounts`,
 `job`, `job_grade`, `firstname`, `lastname`, `dateofbirth`, `sex`, `position`, `inventory`, `loadout`,
 `metadata`, `status`, `is_dead`. Jobs come from `jobs` + `job_grades`, and item definitions from
-`items` — the same shape `esx_core` uses. `install.sql` creates and seeds all of it on first boot.
+`items`. `install.sql` creates and seeds all of it on first boot.
 
-That buys three things for a server migrating from ESX:
+That layout buys three things:
 
-1. **Your data comes with you.** An existing ESX `users` table drops in. `hexa_core` reads the same
-   columns and writes them back in the same format.
-2. **External tooling keeps working.** Admin panels, web dashboards and SQL reports written against
-   ESX column names still read correctly, including the summarised `status` column.
+1. **Real columns, not one blob.** Everything a query needs has a column of its own, so a character
+   can be read and edited straight from the database.
+2. **External tooling keeps working.** Admin panels, web dashboards and SQL reports read the same
+   columns the framework does, including the summarised `status` column.
 3. **Item and job editing stays where you expect it.** The database is the only source of truth for
    both catalogues. `Core.Shared.Items` and `Core.Shared.Jobs` start empty and are filled at boot, so
    you edit rows and restart `hexa_core` rather than editing a Lua table.
 
 In memory the shape is different on purpose. A row is translated into a `PlayerData` table with
-`citizenid`, `money`, `charinfo`, `job` and `metadata`, so scripts written against the QB-style player
-data keep working. The two inventory columns (`inventory` for goods, `loadout` for weapons) are merged
-into one slot table at load and split again at save.
+`citizenid`, `money`, `charinfo`, `job` and `metadata`, so scripts written against the flat
+`citizenid` / `charinfo` player data keep working. The two inventory columns (`inventory` for
+goods, `loadout` for weapons) are merged into one slot table at load and split again at save.
 
 ::: warning Do not write to `users` behind the framework
 `Core.SavePlayer` upserts the whole row. A write that lands between two saves is overwritten on the
@@ -182,43 +182,9 @@ The catalogue verbs are `Core.RegisterItem`, `Core.RegisterItems`, `Core.Unregis
 ::: danger The export named AddItem is the catalogue one
 `exports['hexa_core']:AddItem(name, def)` and `exports['hexa_core']:RemoveItem(name)` are kept
 permanently, and they register and unregister item *definitions* — the same meaning those exports have
-in `qb-core`, which is why ported scripts drop in unmodified. They do not touch anyone's inventory. To
+in `rsg-core`, which is why ported scripts drop in unmodified. They do not touch anyone's inventory. To
 give a player an item you need the player object.
 :::
-
-## Coming from ESX or QBCore
-
-Familiar concepts, current `hexa_core` spelling.
-
-| ESX | QBCore | hexa_core |
-| --- | --- | --- |
-| `exports['es_extended']:getSharedObject()` | `exports['qb-core']:GetCoreObject()` | `exports['hexa_core']:GetCoreObject()` |
-| `ESX.GetPlayerFromId(source)` | `QBCore.Functions.GetPlayer(source)` | `Core.GetPlayer(source)` |
-| `ESX.GetPlayerFromIdentifier(id)` | `QBCore.Functions.GetPlayerByCitizenId(cid)` | `Core.GetPlayerByCitizenId(cid)` / `Core.GetPlayerByLicense(license)` |
-| `ESX.GetPlayers()` | `QBCore.Functions.GetPlayers()` | `Core.GetPlayers()` (server ids) |
-| `ESX.GetExtendedPlayers()` | `QBCore.Functions.GetQBPlayers()` | `Core.GetPlayerObjects()` |
-| `xPlayer.addAccountMoney('bank', 100)` | `Player.Functions.AddMoney('bank', 100)` | `Player.AddMoney('bank', 100, 'reason')` |
-| `xPlayer.getAccount('bank').money` | `Player.Functions.GetMoney('bank')` | `Player.GetMoney('bank')` |
-| `xPlayer.addInventoryItem('bread', 1)` | `Player.Functions.AddItem('bread', 1)` | `Player.AddItem('bread', 1)` |
-| `xPlayer.setJob('police', 1)` | `Player.Functions.SetJob('police', 1)` | `Player.SetJob('police', 1)` |
-| `ESX.Items` | `QBCore.Shared.Items` | `Core.Shared.Items` |
-| `ESX.Jobs` | `QBCore.Shared.Jobs` | `Core.Shared.Jobs` |
-| — | `QBCore.Functions.AddItem(name, def)` | `Core.RegisterItem(name, def)` |
-| — | `QBCore.Functions.AddJob(name, def)` | `Core.RegisterJob(name, def)` |
-| `ESX.RegisterServerCallback` | `QBCore.Functions.CreateCallback` | `Core.CreateCallback(name, cb)` |
-| `ESX.TriggerServerCallback` | `QBCore.Functions.TriggerCallback` | `Core.TriggerCallback(name, cb, ...)` from the client |
-| `ESX.RegisterUsableItem` | `QBCore.Functions.CreateUseableItem` | `Core.CreateUseableItem(item, cb)` |
-| `ESX.RegisterCommand` | `QBCore.Commands.Add` | `Core.Commands.Add(name, help, args, argsRequired, cb, permission)` |
-| `ESX.ShowNotification` | `QBCore.Functions.Notify` | `Core.Notify(source, data)` |
-| `ESX.Game.SpawnVehicle` | `QBCore.Functions.SpawnVehicle` | `Core.SpawnVehicle(source, model, coords, warp)` |
-
-Names that carried over unchanged include `GetPlayer`, `GetPlayerData`, `GetIdentifier`, `Notify`,
-`HasPermission`, `AddPermission`, `RemovePermission`, `CreateCallback`, `TriggerCallback`,
-`CreateUseableItem`, `UseItem`, `HasItem`, `CanCarryItem`, `Kick`, `GetCoords`, `SpawnVehicle`,
-`CreateVehicle`, the routing-bucket helpers, and on the player object `AddMoney`, `RemoveMoney`,
-`SetMoney`, `GetMoney`, `SetJob`, `SetJobDuty`, `SetMetaData`, `GetMetaData`, `SetPlayerData`,
-`AddItem`, `RemoveItem`, `GetItemBySlot`, `GetItemByName`, `GetItemsByName`, `GetTotalWeight`,
-`HasItem`, `Save` and `Logout`.
 
 ## Saving is the server's job
 

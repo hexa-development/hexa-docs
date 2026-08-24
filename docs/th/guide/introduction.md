@@ -4,7 +4,7 @@
 แคตตาล็อกไอเทมกับอาชีพ สิทธิ์ callback และรอบการเซฟทั้งหมด ทำงานบน RedM (RDR2 บน FXServer)
 และพึ่งพา resource ภายนอกแค่ `oxmysql` ตัวเดียว
 
-หน้านี้อธิบายว่า hexa_core ดูแลอะไรบ้าง ทำไมฐานข้อมูลถึงเป็นโครงแบบ ESX โครงสร้างไฟล์เป็นอย่างไร
+หน้านี้อธิบายว่า hexa_core ดูแลอะไรบ้าง ฐานข้อมูลออกแบบมาแบบไหน โครงสร้างไฟล์เป็นอย่างไร
 และจะดึง core object มาใช้ใน resource ของคุณอย่างไร
 
 ::: tip เวอร์ชัน 3.0.0
@@ -36,25 +36,25 @@ API สาธารณะถูกแบนราบตั้งแต่ 3.0.0 
 จะเช็คก่อนว่า resource นั้น started จริงไหม ถ้ายังไม่ขึ้นจะคืนค่าที่ปลอดภัยแทน กระเป๋าที่ยังไม่สตาร์ต
 จึงไม่กลายเป็น Lua error กลาง core
 
-## ทำไมฐานข้อมูลถึงเป็นโครง ESX
+## ฐานข้อมูลออกแบบมาแบบไหน
 
-ตัวละครเก็บอยู่ในตาราง `users` คีย์ด้วย `identifier` โดยใช้ชื่อคอลัมน์แบบ ESX ทั้งชุด: `accounts`,
+ตัวละครเก็บอยู่ในตาราง `users` คีย์ด้วย `identifier` แยกคอลัมน์ตามเรื่องอย่างชัดเจน: `accounts`,
 `job`, `job_grade`, `firstname`, `lastname`, `dateofbirth`, `sex`, `position`, `inventory`, `loadout`,
 `metadata`, `status`, `is_dead` ส่วนอาชีพมาจาก `jobs` + `job_grades` และนิยามไอเทมมาจาก `items`
-ซึ่งเป็นโครงเดียวกับ `esx_core` ทุกอย่างถูกสร้างและ seed ให้อัตโนมัติโดย `install.sql` ตอนบูตครั้งแรก
+ทุกอย่างถูกสร้างและ seed ให้อัตโนมัติโดย `install.sql` ตอนบูตครั้งแรก
 
-คนที่ย้ายมาจาก ESX ได้อะไรจากตรงนี้สามข้อ
+โครงแบบนี้ให้ผลสามข้อ
 
-1. **ข้อมูลเดิมย้ายตามมาได้** ตาราง `users` ของ ESX ที่มีอยู่แล้ววางลงได้เลย hexa_core อ่านคอลัมน์เดิม
-   และเขียนกลับด้วยฟอร์แมตเดิม
-2. **เครื่องมือภายนอกยังใช้ได้** แผงแอดมิน เว็บ dashboard หรือรายงาน SQL ที่เขียนอิงชื่อคอลัมน์ ESX
-   ยังอ่านถูก รวมถึงคอลัมน์ `status` แบบย่อด้วย
+1. **เป็นคอลัมน์จริง ไม่ใช่ blob ก้อนเดียว** ทุกอย่างที่ query ต้องใช้มีคอลัมน์ของตัวเอง
+   จะอ่านหรือแก้ตัวละครจากฐานข้อมูลตรง ๆ ก็ได้
+2. **เครื่องมือภายนอกใช้ได้** แผงแอดมิน เว็บ dashboard หรือรายงาน SQL อ่านคอลัมน์ชุดเดียวกับที่เฟรมเวิร์กใช้
+   รวมถึงคอลัมน์ `status` แบบย่อด้วย
 3. **แก้ไอเทมกับอาชีพที่เดิม** ฐานข้อมูลคือแหล่งความจริงเพียงแหล่งเดียวของทั้งสองแคตตาล็อก
    `Core.Shared.Items` และ `Core.Shared.Jobs` เริ่มต้นว่างเปล่าแล้วถูกเติมตอนบูต ดังนั้นการเพิ่มของ
    คือแก้แถวใน DB แล้ว restart `hexa_core` ไม่ใช่ไปแก้ตาราง Lua
 
 ส่วนรูปทรงในหน่วยความจำตั้งใจให้ต่างออกไป แถวหนึ่งแถวจะถูกแปลงเป็น `PlayerData` ที่มี `citizenid`,
-`money`, `charinfo`, `job`, `metadata` เพื่อให้สคริปต์ที่เขียนตามโครง QB เดิมทำงานต่อได้
+`money`, `charinfo`, `job`, `metadata` เพื่อให้สคริปต์ที่เขียนตามโครง `citizenid` / `charinfo` เดิมทำงานต่อได้
 และสองคอลัมน์ของกระเป๋า (`inventory` เก็บของทั่วไป, `loadout` เก็บอาวุธ) จะถูกรวมเป็นตารางช่องก้อนเดียว
 ตอนโหลด แล้วแยกกลับตอนเซฟ
 
@@ -182,44 +182,10 @@ Player.AddItem('bread', 1)
 
 ::: danger export ที่ชื่อ AddItem คือฝั่งแคตตาล็อก
 `exports['hexa_core']:AddItem(name, def)` และ `exports['hexa_core']:RemoveItem(name)` ถูกเก็บไว้ถาวร
-และทำหน้าที่ลงทะเบียน/ถอนนิยามไอเทม ซึ่งเป็นความหมายเดียวกับ export ชื่อนี้ใน `qb-core`
+และทำหน้าที่ลงทะเบียน/ถอนนิยามไอเทม ซึ่งเป็นความหมายเดียวกับ export ชื่อนี้ใน `rsg-core`
 นี่คือเหตุผลที่สคริปต์ที่พอร์ตมาวางแล้วใช้ได้เลยโดยไม่ต้องแก้ export คู่นี้ไม่ยุ่งกับกระเป๋าของใครทั้งนั้น
 ถ้าจะให้ของผู้เล่นต้องผ่าน player object เท่านั้น
 :::
-
-## เทียบกับ ESX และ QBCore
-
-แนวคิดที่คุ้นอยู่แล้ว เทียบกับชื่อปัจจุบันของ hexa_core
-
-| ESX | QBCore | hexa_core |
-| --- | --- | --- |
-| `exports['es_extended']:getSharedObject()` | `exports['qb-core']:GetCoreObject()` | `exports['hexa_core']:GetCoreObject()` |
-| `ESX.GetPlayerFromId(source)` | `QBCore.Functions.GetPlayer(source)` | `Core.GetPlayer(source)` |
-| `ESX.GetPlayerFromIdentifier(id)` | `QBCore.Functions.GetPlayerByCitizenId(cid)` | `Core.GetPlayerByCitizenId(cid)` / `Core.GetPlayerByLicense(license)` |
-| `ESX.GetPlayers()` | `QBCore.Functions.GetPlayers()` | `Core.GetPlayers()` (คืน server id) |
-| `ESX.GetExtendedPlayers()` | `QBCore.Functions.GetQBPlayers()` | `Core.GetPlayerObjects()` |
-| `xPlayer.addAccountMoney('bank', 100)` | `Player.Functions.AddMoney('bank', 100)` | `Player.AddMoney('bank', 100, 'reason')` |
-| `xPlayer.getAccount('bank').money` | `Player.Functions.GetMoney('bank')` | `Player.GetMoney('bank')` |
-| `xPlayer.addInventoryItem('bread', 1)` | `Player.Functions.AddItem('bread', 1)` | `Player.AddItem('bread', 1)` |
-| `xPlayer.setJob('police', 1)` | `Player.Functions.SetJob('police', 1)` | `Player.SetJob('police', 1)` |
-| `ESX.Items` | `QBCore.Shared.Items` | `Core.Shared.Items` |
-| `ESX.Jobs` | `QBCore.Shared.Jobs` | `Core.Shared.Jobs` |
-| — | `QBCore.Functions.AddItem(name, def)` | `Core.RegisterItem(name, def)` |
-| — | `QBCore.Functions.AddJob(name, def)` | `Core.RegisterJob(name, def)` |
-| `ESX.RegisterServerCallback` | `QBCore.Functions.CreateCallback` | `Core.CreateCallback(name, cb)` |
-| `ESX.TriggerServerCallback` | `QBCore.Functions.TriggerCallback` | `Core.TriggerCallback(name, cb, ...)` เมื่อเรียกจาก client |
-| `ESX.RegisterUsableItem` | `QBCore.Functions.CreateUseableItem` | `Core.CreateUseableItem(item, cb)` |
-| `ESX.RegisterCommand` | `QBCore.Commands.Add` | `Core.Commands.Add(name, help, args, argsRequired, cb, permission)` |
-| `ESX.ShowNotification` | `QBCore.Functions.Notify` | `Core.Notify(source, data)` |
-| `ESX.Game.SpawnVehicle` | `QBCore.Functions.SpawnVehicle` | `Core.SpawnVehicle(source, model, coords, warp)` |
-
-ชื่อที่ไม่ได้เปลี่ยนเลยและไม่ต้องไปตามแก้ ได้แก่ `GetPlayer`, `GetPlayerData`, `GetIdentifier`, `Notify`,
-`HasPermission`, `AddPermission`, `RemovePermission`, `CreateCallback`, `TriggerCallback`,
-`CreateUseableItem`, `UseItem`, `HasItem`, `CanCarryItem`, `Kick`, `GetCoords`, `SpawnVehicle`,
-`CreateVehicle`, กลุ่ม helper ของ routing bucket ทั้งชุด และบน player object คือ `AddMoney`,
-`RemoveMoney`, `SetMoney`, `GetMoney`, `SetJob`, `SetJobDuty`, `SetMetaData`, `GetMetaData`,
-`SetPlayerData`, `AddItem`, `RemoveItem`, `GetItemBySlot`, `GetItemByName`, `GetItemsByName`,
-`GetTotalWeight`, `HasItem`, `Save`, `Logout`
 
 ## รอบเซฟเป็นหน้าที่ของ server
 

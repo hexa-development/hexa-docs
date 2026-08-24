@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "Hexa Framework"
   text: "The core framework for RedM roleplay servers"
-  tagline: hexa_core gives you players, jobs, items, money and status in one flat API - an ESX-shaped database with none of the ESX ceremony.
+  tagline: hexa_core gives you players, jobs, items, money and status in one flat API - on a database that installs itself, with none of the ceremony.
   actions:
     - theme: brand
       text: Get started
@@ -19,8 +19,8 @@ hero:
 features:
   - title: Built for RedM, not ported to it
     details: Written against the RDR2 natives from the start. Interaction prompts, eagle eye tuning, IPL and interior loading, world density, colour-mapped minimap zones and the hunger/thirst/cleanliness/stress status loop all ship in the core.
-  - title: ESX-shaped database, installed for you
-    details: The users table is keyed by identifier exactly as ESX keys it, and install.sql runs itself on every boot. Idempotent DDL means a fresh database and a five-year-old one both end up correct with no manual import.
+  - title: A database that installs itself
+    details: The users table is keyed by identifier, one column per concern, and install.sql runs itself on every boot. Idempotent DDL means a fresh database and a five-year-old one both end up correct with no manual import.
   - title: One complete player object
     details: Core.GetPlayer(source) returns everything about a character on one flat table - money across cash, bank and gold, inventory calls, job and duty, metadata, state bags and its own Save. No .Functions layer to step through.
   - title: Callbacks in both directions
@@ -93,7 +93,7 @@ jobs: `Core.RegisterJob`, `Core.UnregisterJob`, `Core.RegisterJobs` and
 
 ::: tip
 On the export surface only, `exports['hexa_core']:AddItem` and `:RemoveItem` are
-kept permanently. They are catalogue calls, matching what a ported qb or rsg
+kept permanently. They are catalogue calls, matching what a ported rsg-core
 script expects from those export names, so such a script drops in unmodified.
 :::
 

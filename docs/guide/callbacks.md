@@ -293,7 +293,7 @@ server can push. If the data changes rarely, have the client send it once on loa
 server side.
 
 ::: tip
-Ported qb/rsg scripts that go through `[bridge]/rsg-core` do not hit this: the bridge keeps a real
+Ported `rsg-core` scripts that go through `[bridge]/rsg-core` do not hit this: the bridge keeps a real
 queue keyed by name **and** player id, so overlapping `RSGCore.Functions.TriggerClientCallback`
 calls are safe there. That queue belongs to the bridge, not to `hexa_core` - code written directly
 against `Core` gets the single slot described above.

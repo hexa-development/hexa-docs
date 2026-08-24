@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "Hexa Framework"
   text: "เฟรมเวิร์กหลักสำหรับเซิร์ฟเวอร์ RedM"
-  tagline: hexa_core รวมระบบผู้เล่น อาชีพ ไอเทม เงิน และสถานะไว้ใน API ชั้นเดียว โครงฐานข้อมูลแบบ ESX ที่ย้ายมาได้ทันที
+  tagline: hexa_core รวมระบบผู้เล่น อาชีพ ไอเทม เงิน และสถานะไว้ใน API ชั้นเดียว บนฐานข้อมูลที่ติดตั้งตัวเองตอนบูต
   actions:
     - theme: brand
       text: เริ่มต้นใช้งาน
@@ -19,8 +19,8 @@ hero:
 features:
   - title: เขียนเพื่อ RedM ตั้งแต่แรก ไม่ใช่ของพอร์ตมา
     details: ใช้ native ของ RDR2 ตรง ๆ ทั้ง prompt โต้ตอบ, eagle eye, การโหลด IPL และ interior, ความหนาแน่นของโลก, การระบายสีโซนบนแผนที่ และลูปสถานะ hunger / thirst / cleanliness / stress อยู่ในตัว core เอง
-  - title: ฐานข้อมูลโครง ESX ติดตั้งให้เองตอนบูต
-    details: ตาราง users คีย์ด้วย identifier แบบเดียวกับ ESX และ install.sql รันตัวเองทุกครั้งที่เปิดเซิร์ฟ เป็น DDL ที่รันซ้ำได้ ฐานใหม่หรือฐานเก่าก็จบเหมือนกันโดยไม่ต้อง import มือ
+  - title: ฐานข้อมูลติดตั้งให้เองตอนบูต
+    details: ตาราง users คีย์ด้วย identifier แยกคอลัมน์ตามเรื่องชัดเจน และ install.sql รันตัวเองทุกครั้งที่เปิดเซิร์ฟ เป็น DDL ที่รันซ้ำได้ ฐานใหม่หรือฐานเก่าก็จบเหมือนกันโดยไม่ต้อง import มือ
   - title: Player object ครบในตารางเดียว
     details: Core.GetPlayer(source) คืนทุกอย่างของตัวละครมาในตารางแบนตัวเดียว ทั้ง cash / bank / gold, ไอเทม, อาชีพและเวร, metadata, state bag และ Save ของตัวเอง ไม่ต้องแวะผ่านชั้น .Functions อีก
   - title: Callback วิ่งได้สองทาง
@@ -91,7 +91,7 @@ Player.AddItem('canteen', 1, false, false, 'shop purchase')
 
 ::: tip
 เฉพาะบนชั้น export เท่านั้นที่ `exports['hexa_core']:AddItem` และ `:RemoveItem`
-ถูกเก็บไว้ถาวร ทั้งสองตัวเป็นคำสั่งฝั่งแคตตาล็อก ซึ่งตรงกับที่สคริปต์ qb / rsg
+ถูกเก็บไว้ถาวร ทั้งสองตัวเป็นคำสั่งฝั่งแคตตาล็อก ซึ่งตรงกับที่สคริปต์ rsg-core
 ที่พอร์ตมาคาดหวังจากชื่อ export พวกนี้อยู่แล้ว เอามาวางได้เลยโดยไม่ต้องแก้
 :::
 

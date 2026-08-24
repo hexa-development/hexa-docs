@@ -49,7 +49,7 @@ Player.AddItem('bread', 1)
 `Core.UnregisterItem`, `Core.RegisterItems`, `Core.UpdateItemDefinition`
 
 แต่ **ชื่อฝั่ง export ตั้งใจไม่แตะ** `AddItem`, `AddItems`, `UpdateItem`, `RemoveItem` จะคงชื่อเดิมไว้ถาวร
-เพราะนี่คือรูปแบบที่สคริปต์พอร์ตมาจาก qb-core และ rsg-core เรียกอยู่แล้ว ควรวางลงเซิร์ฟนี้แล้วใช้ได้เลยโดยไม่ต้องแก้
+เพราะนี่คือรูปแบบที่สคริปต์พอร์ตมาจาก `rsg-core` เรียกอยู่แล้ว ควรวางลงเซิร์ฟนี้แล้วใช้ได้เลยโดยไม่ต้องแก้
 ฝั่งอาชีพก็ใช้กติกาเดียวกัน
 
 ---
@@ -262,7 +262,7 @@ local rows = exports['hexa_core']:EncodeInventory(Player.PlayerData.items)
 โดยข้ามอาวุธและข้ามของที่จำนวนไม่เกิน 0
 
 `DecodeInventory(raw)` รับค่าดิบจากคอลัมน์ จะเป็น string หรือตารางที่ถอดแล้วก็ได้ และคืน array รูปเดียวกัน
-อ่านได้ทั้งรูปแบบ array ปัจจุบัน array รุ่นก่อน และรูปแบบ ESX เก่าแบบ `{ name = count }`
+อ่านได้ทั้งรูปแบบ array ปัจจุบัน array รุ่นก่อน และรูปแบบเก่าแบบ `{ name = count }`
 
 #### EncodeLoadout / DecodeLoadout
 
@@ -507,7 +507,7 @@ local weapons = exports['hexa_core']:GetWeapons()
 ### ชื่อ export ไม่เปลี่ยน
 
 การแบนชั้นใน 3.0 เปลี่ยนชื่อบน core object ไปเยอะมาก แต่แทบไม่แตะชื่อบน export เลย และนั่นเป็นความตั้งใจ
-เพราะ export คือขอบเขตที่สคริปต์ภายนอกและสคริปต์ที่พอร์ตมาวางตัวอยู่ ถ้าทำพังก็คือพอร์ต qb-core และ rsg-core
+เพราะ export คือขอบเขตที่สคริปต์ภายนอกและสคริปต์ที่พอร์ตมาวางตัวอยู่ ถ้าทำพังก็คือสคริปต์ที่พอร์ตมา
 ทั้งเซิร์ฟพังพร้อมกันทันที
 
 | Export (ไม่เปลี่ยน) | core object (3.0)           |
@@ -540,7 +540,7 @@ local weapons = exports['hexa_core']:GetWeapons()
   และ `deletePromptGroup` ยังอยู่ครบพร้อม signature เดิม โดย `hexa_core` ส่งต่อไปให้ `hexa_interaction` ข้างใน
   ผู้เรียกที่เขียนไว้ตั้งแต่ 2.x ไม่ต้องแก้อะไรเลย
 - **ข้อความบนหน้าจอ** ยังเป็น `DrawText`, `ChangeText`, `HideText`, `KeyPressed` เหมือนเดิม
-  ตัวที่ทำงานจริงใช้เส้นทาง `CreateVarString` / `DisplayText` ของ RDR3 ไม่ได้อิงกับ text pipeline ของ GTA V แต่อย่างใด
+  ตัวที่ทำงานจริงใช้เส้นทาง `CreateVarString` / `DisplayText` ของ RDR3 ตลอดทั้งเส้น
 
 ### ของใหม่ใน 3.0
 

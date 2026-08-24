@@ -507,7 +507,7 @@ Player.SetJobDuty(true)
 `Player.SetJob(job, grade)` คืน `false` ถ้าอาชีพนั้นไม่มีในแคตตาล็อก เมื่อสำเร็จจะยิง `HexaCore:Server:OnJobUpdate` และ
 `HexaCore:Client:OnJobUpdate` พร้อม sync ให้
 
-`Player.SetGang(gang, grade)` เป็น no-op ที่คืน `false` เสมอ เซิร์ฟนี้ไม่มีระบบแก๊ง เมธอดนี้มีอยู่เพราะ bridge ของ qb/rsg เรียกหามัน
+`Player.SetGang(gang, grade)` เป็น no-op ที่คืน `false` เสมอ เซิร์ฟนี้ไม่มีระบบแก๊ง เมธอดนี้มีอยู่เพราะ bridge ของ `rsg-core` เรียกหามัน
 
 ## สิทธิ์
 

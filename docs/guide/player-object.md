@@ -252,7 +252,7 @@ Core.RegisterItem('bread', { name = 'bread', label = 'Bread', weight = 1, type =
 type exists at all. They used to share the verb `AddItem` and meant opposite things.
 
 On the export surface only, `exports['hexa_core']:AddItem` and `:RemoveItem` remain permanent
-aliases for the catalogue functions, so ported qb/rsg scripts keep working unmodified.
+aliases for the catalogue functions, so ported `rsg-core` scripts keep working unmodified.
 
 ### Capacity
 
@@ -314,7 +314,7 @@ how many players it saved.
 ## State bags
 
 Two methods move the same five keys - `hunger`, `thirst`, `cleanliness`, `stress`, `health` -
-between `PlayerData.metadata` and the FiveM player state bag. The names say which way:
+between `PlayerData.metadata` and the FXServer player state bag. The names say which way:
 
 | Method | Direction |
 | --- | --- |

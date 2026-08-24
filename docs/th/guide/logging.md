@@ -33,7 +33,7 @@ Core.Warn('paycheck skipped for id %s - no job grade', tostring(source))
 Core.Error('could not read the jobs table: %s', tostring(err))
 ```
 
-การใส่สีใช้โค้ดสีของ FiveM (`^1` ถึง `^9`) ล้วน ไม่ใช้ ANSI escape เพราะคอนโซล FXServer แต่ละตัวแสดงผล
+การใส่สีใช้โค้ดสีของ FXServer (`^1` ถึง `^9`) ล้วน ไม่ใช้ ANSI escape เพราะคอนโซล FXServer แต่ละตัวแสดงผล
 ANSI ไม่เหมือนกัน
 
 ### ShowError กับ ShowSuccess

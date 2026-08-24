@@ -34,7 +34,7 @@ Core.Warn('paycheck skipped for id %s - no job grade', tostring(source))
 Core.Error('could not read the jobs table: %s', tostring(err))
 ```
 
-Colouring uses FiveM colour codes (`^1` … `^9`), never ANSI escapes, because FXServer consoles do not
+Colouring uses FXServer colour codes (`^1` … `^9`), never ANSI escapes, because FXServer consoles do not
 agree on how to render ANSI.
 
 ### ShowError and ShowSuccess
