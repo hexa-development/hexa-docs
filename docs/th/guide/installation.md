@@ -50,15 +50,14 @@ ensure oxmysql
 ensure hexa_core
 
 # resource ที่เรียก exports['hexa_core'] ให้อยู่ใต้บรรทัดนี้
-ensure hexa_inventory
-ensure hexa_multicharacter
+ensure my_resource
 ```
 
 เหตุผลที่ลำดับต้องเป็นแบบนี้มีสองข้อ
 
 - hexa_core รอ `MySQL.ready` ของ oxmysql สลับลำดับกันแค่ทำให้ติดตั้งช้าลง แต่ถ้าไม่มี oxmysql
   เลย เฟรมเวิร์กจะไม่พร้อมใช้งานถาวร
-- `install.sql` เป็นสคีมาที่เดียวของทั้งสแตก hexa_inventory ไม่มี installer ของตัวเองแล้ว ตาราง
+- `install.sql` เป็นสคีมาที่เดียวของทั้งสแตก ระบบกระเป๋าไม่มี installer ของตัวเองแล้ว ตาราง
   `users_vault` กับ `item_drops` ถูกสร้างที่นี่ resource ไหนจะแตะตารางพวกนี้ต้องรอให้ hexa_core
   สร้างเสร็จก่อน (ดูหัวข้อ "รอให้สคีมาพร้อม" ด้านล่าง)
 
@@ -138,7 +137,7 @@ Rockstar Launcher และ Epic ที่มีจำนวนไม่น้�
 | `jobs` | นิยามอาชีพ seed มาให้แล้วคือ `unemployed`, กฎหมาย 5 เมือง และ `medic` |
 | `job_grades` | เกรดของแต่ละอาชีพ พร้อม `salary` และ `isboss` |
 | `items` | แคตตาล็อกไอเทม (`name`, `label`, `weight`, `rare`, `can_remove`) seed อาหาร เครื่องดื่ม ยา และไอเทมระบบ `clothes` กับ `toilet` |
-| `users_vault` | ที่เก็บของถาวรที่ไม่ใช่ของผู้เล่นสำหรับ hexa_inventory เช่นสแตช ตู้เซฟ กระเป๋าม้า |
+| `users_vault` | ที่เก็บของถาวรที่ไม่ใช่ของผู้เล่นสำหรับระบบกระเป๋าเช่นสแตช ตู้เซฟ กระเป๋าม้า |
 | `item_drops` | ถุงของที่ทิ้งไว้บนพื้น เก็บลง DB เพื่อให้ยังอยู่หลังรีสตาร์ท |
 
 อาวุธ "ไม่ต้อง" มีแถวในตาราง `items` เพราะ `server/items.lua` ดึง `Shared.Weapons` จาก
@@ -289,7 +288,7 @@ Config.MultiCharacter = true
 Config.DefaultSpawn = vector4(-2784.2534, -3058.2639, -12.3404, 333.5929)
 ```
 
-`Config.MultiCharacter = true` คือยกหน้าที่เลือกตัวละครให้ hexa_multicharacter และปิด auto-login
+`Config.MultiCharacter = true` คือยกหน้าที่เลือกตัวละครให้ระบบหลายตัวละคร และปิด auto-login
 ถ้าตั้ง `false` ระบบจะ auto-login ตัวละครล่าสุดให้เลยโดยไม่มีหน้าเลือก ส่วน `Config.MaxPlayers`
 ไม่ใช่ตัวเลขตายตัว มันอ่าน convar `sv_maxclients` จาก `server.cfg` ของคุณ ถ้าไม่ได้ตั้งไว้จะใช้ 48
 

@@ -68,7 +68,7 @@ drop it.
 | `charinfo` | table | `firstname`, `lastname`, `birthdate`, `gender`, `nationality`, `account`. |
 | `job` | table | `name`, `label`, `type`, `payment`, `onduty`, `isboss`, `grade`. |
 | `metadata` | table | Everything else about the character. See below. |
-| `items` | table | Inventory slots, owned by `hexa_inventory` at runtime. |
+| `items` | table | Inventory slots, owned by the inventory resource at runtime. |
 | `position` | table | Last saved coordinates. |
 | `weight` | number | Carry capacity, a percentage where 100 is a full satchel. |
 | `slots` | number | Number of inventory slots. |
@@ -202,7 +202,7 @@ calls `Player.SetMetaData` directly and is not restricted.
 
 ## Items
 
-The inventory methods on the player object delegate to `hexa_inventory`. When that resource is not
+The inventory methods on the player object delegate to the inventory resource. When it is not
 started they degrade to a safe value rather than erroring.
 
 ```lua
@@ -216,7 +216,7 @@ local weight   = Player.GetTotalWeight()
 local has      = Player.HasItem('bread', 1)
 ```
 
-| Method | Returns | Value when `hexa_inventory` is stopped |
+| Method | Returns | Value when the inventory resource is stopped |
 | --- | --- | --- |
 | `AddItem(item, amount, slot, info, reason)` | `stored, dropped` | `false, false` |
 | `RemoveItem(item, amount, slot, reason)` | boolean | `false` |
@@ -252,7 +252,7 @@ Core.RegisterItem('bread', { name = 'bread', label = 'Bread', weight = 1, type =
 type exists at all. They used to share the verb `AddItem` and meant opposite things.
 
 On the export surface only, `exports['hexa_core']:AddItem` and `:RemoveItem` remain permanent
-aliases for the catalogue functions, so ported `rsg-core` scripts keep working unmodified.
+aliases for the catalogue functions, so ported scripts keep working unmodified.
 
 ### Capacity
 
@@ -263,7 +263,7 @@ end
 ```
 
 `CanCarryItem` forwards to `Core.CanCarryItem(source, item, amount)`. It returns `false` if the
-character is not loaded, if the item is not in `Core.Shared.Items`, or if `hexa_inventory` is not
+character is not loaded, if the item is not in `Core.Shared.Items`, or if the inventory resource is not
 started. A missing `amount` is treated as 1.
 
 Capacity itself is changed through the core, not the player object:
@@ -378,7 +378,7 @@ Player.Logout()
 ```
 
 `Save()` pulls the state bags and writes the character through `Core.SavePlayer(source)`, which
-upserts the `users` row and asks `hexa_inventory` to save the satchel. On an offline object it goes
+upserts the `users` row and asks the inventory resource to save the satchel. On an offline object it goes
 to `Core.SaveOfflinePlayer(PlayerData)` instead. Position comes from the live ped when one exists,
 and falls back to the stored position when it does not, so a queued save for a player who already
 dropped will not write them to the middle of the map.
@@ -398,7 +398,7 @@ object before removing it.
 local ok = Player.SetGang()
 ```
 
-`Player.SetGang` exists only so that the rsg bridge has something to call. It takes no arguments,
+`Player.SetGang` exists only so that the bridge has something to call. It takes no arguments,
 does nothing, and returns `false`. It is not a stub waiting to be implemented - there is no gang
 data on this server, and `PlayerData` has no gang field.
 

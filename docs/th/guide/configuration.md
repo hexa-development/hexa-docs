@@ -62,7 +62,7 @@ local steam = Core.GetIdentifier(source, 'steam')
 พร้อมข้อความบอกสาเหตุ ทางที่ปลอดภัยกว่าคือ `'license'` เพราะผู้เล่น RedM ทุกคนมี Rockstar license อยู่แล้ว
 :::
 
-`Config.MultiCharacter = true` จะโยนหน้าที่เลือกตัวละครให้ `hexa_multicharacter` และปิดทาง auto-login
+`Config.MultiCharacter = true` จะโยนหน้าที่เลือกตัวละครให้ระบบหลายตัวละคร และปิดทาง auto-login
 ที่อยู่ใน `client/spawn.lua` ถ้าตั้งเป็น `false` ระบบจะพาตัวละครที่เล่นล่าสุดเข้าเกมเลย ไม่มีหน้าเลือก
 
 `Config.DefaultSpawn` เป็น `vector4` โดยช่อง `w` คือทิศที่หันหน้า ค่านี้ถูกใช้ทั้งใน `server/spawn.lua`

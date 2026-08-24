@@ -235,7 +235,7 @@ TriggerEvent('HexaCore:Notify', { title = 'อยู่ไกลเกินไ�
 
 ::: warning
 ห้าม resource อื่นเขียน `RegisterNetEvent('HexaCore:Notify')` ของตัวเองเพิ่ม `hexa_core` มีตัวรับ
-อยู่แล้วและส่งต่อไป `hexa_notify` ให้เอง ถ้ามีตัวรับซ้ำ การแจ้งเตือนทุกครั้งในเซิร์ฟจะเด้งสองรอบ
+อยู่แล้วและส่งต่อไประบบแจ้งเตือนให้เอง ถ้ามีตัวรับซ้ำ การแจ้งเตือนทุกครั้งในเซิร์ฟจะเด้งสองรอบ
 :::
 
 ### HexaCore:Client:UpdateNeeds
@@ -359,8 +359,8 @@ end)
 | ----- | ---- | ---------- |
 | `HexaCore:Server:AddItem` | server | `Player.AddItem(name, amount, slot, info)` ฝั่ง server |
 | `HexaCore:Server:RemoveItem` | server | `Player.RemoveItem(name, amount, slot)` ฝั่ง server |
-| `HexaCore:Server:UseItem` | server | `hexa_inventory` |
-| `HexaCore:Client:UseItem` | client | `hexa_inventory` |
+| `HexaCore:Server:UseItem` | server | ระบบกระเป๋า |
+| `HexaCore:Client:UseItem` | client | ระบบกระเป๋า |
 
 ::: danger
 `HexaCore:Server:AddItem` คือรูรั่วที่ใหญ่ที่สุดของ API ชุดเก่า client เสกไอเทมอะไรก็ได้ในแคตตาล็อก
@@ -400,9 +400,8 @@ end, model, coords, warp)
 | Event | ทิศทาง | พารามิเตอร์ | เจ้าของ |
 | ----- | ------ | ----------- | ------- |
 | `hexa_log:server:CreateLog` | server local | `category`, `title`, `colour`, `message` | ยิงกันทั่วทั้งสแตก และตอนนี้ `hexa_core` รับเองด้วย |
-| `hexa_inventory:client:updateInventory` | server to client | ไม่มี | `hexa_inventory` ส่งหลังไอเทมเงินเปลี่ยนขณะเปิดกระเป๋าอยู่ |
-| `hud:client:OnMoneyChange` | server to client | `moneytype`, `amount`, `isRemove` | resource HUD |
-| `chat:addMessage` | client local | `{ color, multiline, args }` | ทางถอยของ `HexaCore:Notify` เมื่อ `hexa_notify` ไม่ได้ start |
+| `hud:client:OnMoneyChange` | server to client | `moneytype`, `amount`, `isRemove` | HUD ตัวไหนก็ได้ที่ฟังยอดเงินเปลี่ยน |
+| `chat:addMessage` | client local | `{ color, multiline, args }` | ทางถอยของ `HexaCore:Notify` เมื่อระบบแจ้งเตือนไม่ได้ start |
 | `chat:addSuggestions` | server to client | `suggestions` (array) | รายการคำสั่งในแชท รีเฟรชโดย `Core.Commands.Refresh` |
 | `chat:removeSuggestion` | server to client | `'/' .. command` | ถอนคำสั่งที่ผู้เล่นไม่มีสิทธิ์ออกจากรายการ |
 

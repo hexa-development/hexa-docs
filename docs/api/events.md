@@ -246,7 +246,7 @@ TriggerEvent('HexaCore:Notify', { title = 'Too far away', type = 'error', durati
 
 ::: warning
 Do not add your own `RegisterNetEvent('HexaCore:Notify')` in another resource. `hexa_core` already
-owns a handler for it and forwards to `hexa_notify`; a second listener makes every notification in
+owns a handler for it and forwards to the notify resource; a second listener makes every notification in
 the server appear twice.
 :::
 
@@ -377,8 +377,8 @@ resource.
 | ----- | ---- | ----------- |
 | `HexaCore:Server:AddItem` | server | `Player.AddItem(name, amount, slot, info)` on the server |
 | `HexaCore:Server:RemoveItem` | server | `Player.RemoveItem(name, amount, slot)` on the server |
-| `HexaCore:Server:UseItem` | server | `hexa_inventory` |
-| `HexaCore:Client:UseItem` | client | `hexa_inventory` |
+| `HexaCore:Server:UseItem` | server | the inventory resource |
+| `HexaCore:Client:UseItem` | client | the inventory resource |
 
 ::: danger
 `HexaCore:Server:AddItem` was the single worst hole in the old API: a client could hand itself any
@@ -418,9 +418,8 @@ These belong to other scripts. `hexa_core` only sends them.
 | Event | Direction | Payload | Owner |
 | ----- | --------- | ------- | ----- |
 | `hexa_log:server:CreateLog` | server local | `category`, `title`, `colour`, `message` | Fired all over the stack, and now also consumed by `hexa_core` itself |
-| `hexa_inventory:client:updateInventory` | server to client | none | `hexa_inventory`, sent after money items change while the bag is open |
-| `hud:client:OnMoneyChange` | server to client | `moneytype`, `amount`, `isRemove` | The HUD resource |
-| `chat:addMessage` | client local | `{ color, multiline, args }` | Fallback path for `HexaCore:Notify` when `hexa_notify` is not started |
+| `hud:client:OnMoneyChange` | server to client | `moneytype`, `amount`, `isRemove` | Any HUD listening for balance changes |
+| `chat:addMessage` | client local | `{ color, multiline, args }` | Fallback path for `HexaCore:Notify` when the notify resource is not started |
 | `chat:addSuggestions` | server to client | `suggestions` (array) | Chat autocompletion, refreshed by `Core.Commands.Refresh` |
 | `chat:removeSuggestion` | server to client | `'/' .. command` | Removes a suggestion the player has no permission for |
 

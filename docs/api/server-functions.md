@@ -318,7 +318,8 @@ Core.CanCarryItem(source, item, amount) --> boolean
 ```
 
 Checks the item's weight from the shared catalogue against what the character is already carrying.
-Returns `false` if the item is unknown, if the player is not loaded, or if `hexa_inventory` is not
+Returns `false` if the item is unknown, if the player is not loaded, or if the inventory resource
+is not
 running. `amount` defaults to `1`.
 
 ```lua
@@ -335,7 +336,7 @@ The same check is on the player object as `Player.CanCarryItem(item, amount)`.
 Core.HasItem(source, items, amount) --> boolean
 ```
 
-Forwards to `hexa_inventory`. `items` may be a name or a table of names. Returns `false` when the
+Forwards to the inventory resource. `items` may be a name or a table of names. Returns `false` when the
 inventory resource is not started. `Player.HasItem(items, amount)` is the same call from the player
 object.
 
@@ -373,7 +374,7 @@ Deprecated spelling: `Core.CanUseItem`.
 Core.UseItem(source, item)
 ```
 
-Asks `hexa_inventory` to run the item's use flow. Logs a warning and does nothing if the inventory
+Asks the inventory resource to run the item's use flow. Logs a warning and does nothing if the inventory
 resource is not started.
 
 ### SetMaxWeight
@@ -405,7 +406,7 @@ Core.GetSlotsByItem(items, itemName)    --> table|nil
 Core.GetFirstSlotByItem(items, itemName)--> number|nil
 ```
 
-Thin pass-throughs to `hexa_inventory` that take a slot table (usually `Player.PlayerData.items`).
+Thin pass-throughs to the inventory resource that take a slot table (usually `Player.PlayerData.items`).
 All three return `nil` when the inventory resource is not started.
 
 ### SaveInventory, SaveOfflineInventory
@@ -517,7 +518,7 @@ registered exports and they are the **catalogue** functions, the same as `Core.R
 `Core.UnregisterItem`. They do not give or take an item from a player. The same is true of
 `:AddJob`, `:AddJobs`, `:AddItems`, `:UpdateItem`, `:UpdateJob` and `:RemoveJob`.
 
-To move an item to or from a character, go through the player object or `hexa_inventory` directly.
+To move an item to or from a character, go through the player object or the inventory resource directly.
 :::
 
 ## Jobs
@@ -534,7 +535,7 @@ Player.SetJobDuty(true)
 `HexaCore:Server:OnJobUpdate` and `HexaCore:Client:OnJobUpdate` and syncs the player.
 
 `Player.SetGang(gang, grade)` is a documented no-op that always returns `false`. This server has no
-gang system; the method exists because the `rsg-core` bridge calls it.
+gang system; the method exists because the bridge calls it.
 
 ## Permissions
 
@@ -764,7 +765,7 @@ Core.LoadPlayer(source, PlayerData) --> table|nil
 ```
 
 Fills in defaults, validates the job against the catalogue, merges legacy bank accounts into `bank`,
-pulls the satchel from `hexa_inventory` and constructs the player object.
+pulls the satchel from the inventory resource and constructs the player object.
 
 Passing `nil` as the source builds an **offline** object and returns it. Passing a real source
 registers the object in the roster, saves it, fires `HexaCore:Server:PlayerLoaded` and returns

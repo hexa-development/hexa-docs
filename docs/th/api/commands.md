@@ -100,8 +100,8 @@ log หมวด `playermoney` ที่ player object ยิงออกมา 
 
 ชื่อไอเทมจะถูกแปลงเป็นตัวพิมพ์เล็กแล้วตรวจกับ `Core.Shared.Items` ก่อน พิมพ์ผิดจึงได้ข้อความ
 `Item does not exist` แทนที่จะได้ไอเทมพังๆ ติดกระเป๋า ส่วน `amount` ถ้าไม่ใส่หรือใส่ค่าที่แปลงไม่ได้จะเป็น 1
-จากนั้นคำสั่งต้องการให้ `hexa_inventory` อยู่ในสถานะ `started` แล้วส่งของผ่าน
-`exports['hexa_inventory']:AddItem(source, item, amount)` ถ้า resource นั้นไม่ได้รันอยู่จะตอบว่า
+จากนั้นคำสั่งต้องการให้ระบบกระเป๋าอยู่ในสถานะ `started` แล้วส่งของผ่าน
+export `AddItem(source, item, amount)` ของระบบกระเป๋า ถ้า resource นั้นไม่ได้รันอยู่จะตอบว่า
 `Inventory resource not running`
 
 ## อาชีพ

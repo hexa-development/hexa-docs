@@ -93,8 +93,8 @@ jobs: `Core.RegisterJob`, `Core.UnregisterJob`, `Core.RegisterJobs` and
 
 ::: tip
 On the export surface only, `exports['hexa_core']:AddItem` and `:RemoveItem` are
-kept permanently. They are catalogue calls, matching what a ported rsg-core
-script expects from those export names, so such a script drops in unmodified.
+kept permanently. They are catalogue calls, matching what a ported script
+expects from those export names, so such a script drops in unmodified.
 :::
 
 ## Callbacks in both directions

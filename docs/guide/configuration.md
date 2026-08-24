@@ -71,7 +71,8 @@ before you open and keep it.
 player has a Rockstar license.
 :::
 
-`Config.MultiCharacter = true` hands the spawn decision to `hexa_multicharacter` and disables the
+`Config.MultiCharacter = true` hands the spawn decision to the multicharacter resource and disables
+the
 built-in auto-login path in `client/spawn.lua`. Setting it to `false` puts the last-played character
 straight into the world with no picker.
 

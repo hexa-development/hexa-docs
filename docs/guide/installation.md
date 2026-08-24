@@ -50,8 +50,7 @@ ensure oxmysql
 ensure hexa_core
 
 # resources that call exports['hexa_core'] go below this line
-ensure hexa_inventory
-ensure hexa_multicharacter
+ensure my_resource
 ```
 
 Two things depend on this ordering:
@@ -59,9 +58,9 @@ Two things depend on this ordering:
 - hexa_core waits for oxmysql's `MySQL.ready`, so starting them the other way round only delays the
   install, but starting hexa_core without oxmysql at all leaves the framework permanently
   unavailable.
-- `install.sql` is the only schema in the stack. hexa_inventory has no installer of its own; its
-  `users_vault` and `item_drops` tables are created here. A resource that queries them before
-  hexa_core has finished must wait (see [Waiting for the schema](#waiting-for-the-schema)).
+- `install.sql` is the only schema in the stack. The inventory resource has no installer of its
+  own; its `users_vault` and `item_drops` tables are created here. A resource that queries them
+  before hexa_core has finished must wait (see [Waiting for the schema](#waiting-for-the-schema)).
 
 ## Step 4 - choose an identifier type
 
@@ -142,7 +141,7 @@ If some statement failed for a real reason you get a warning with the count inst
 | `jobs` | Job definitions. Seeded with `unemployed`, five law jobs and `medic`. |
 | `job_grades` | Grades per job, with `salary` and `isboss`. |
 | `items` | The item catalogue: `name`, `label`, `weight`, `rare`, `can_remove`. Seeded with food, drink, medicine and the two system items `clothes` and `toilet`. |
-| `users_vault` | Non-player persistent storage for hexa_inventory (stashes, safes, horse bags). |
+| `users_vault` | Non-player persistent storage for the inventory resource (stashes, safes, horse bags). |
 | `item_drops` | Bags left on the ground, so they survive a restart. |
 
 Weapons deliberately have no rows in `items`. `server/items.lua` merges `Shared.Weapons` from
@@ -295,7 +294,7 @@ Config.MultiCharacter = true
 Config.DefaultSpawn = vector4(-2784.2534, -3058.2639, -12.3404, 333.5929)
 ```
 
-`Config.MultiCharacter = true` hands character selection to hexa_multicharacter and disables
+`Config.MultiCharacter = true` hands character selection to the multicharacter resource and disables
 auto-login. With `false`, the most recent character is logged in automatically and no selection
 screen appears. `Config.MaxPlayers` is not a literal — it reads the `sv_maxclients` convar from
 your `server.cfg` and falls back to 48.

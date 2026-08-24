@@ -150,11 +150,11 @@ local cash = Player.GetMoney('cash') or 0
 
 ## Inventory
 
-Every inventory method delegates to `hexa_inventory`. Each one checks
-`GetResourceState('hexa_inventory') == 'started'` first, so a stopped or restarting inventory
+Every inventory method delegates to the inventory resource. Each one checks that it is
+`started` first, so a stopped or restarting inventory
 degrades to a safe value instead of throwing.
 
-| Method | Return when `hexa_inventory` is not started |
+| Method | Return when the inventory resource is not started |
 | --- | --- |
 | `AddItem` | `false, false` |
 | `RemoveItem` | `false` |
@@ -212,7 +212,7 @@ for an `amount` that is not a positive number, and when the player does not have
 
 ```lua
 if Player.RemoveItem('lockpick', 1, false, 'lockpick broke') then
-    TriggerClientEvent('hexa_lockpick:client:broke', source)
+    TriggerClientEvent('my_resource:client:lockpickBroke', source)
 end
 ```
 
@@ -359,7 +359,7 @@ Player.SetPlayerData(key, val)
 ```
 
 No return value. Writes a top-level key on `PlayerData` and calls `SyncPlayerData`. It silently
-does nothing when `key` is not a string. This is how `hexa_inventory` writes `items` back after
+does nothing when `key` is not a string. This is how the inventory resource writes `items` back after
 every change.
 
 ```lua
@@ -383,7 +383,7 @@ Player.SetMetaData({ hunger = 100, thirst = 100, stress = 0 })
 ```
 
 `hunger`, `thirst`, `cleanliness` and `stress` are clamped into `0-100` on the way in, so a script
-that adds stress in a loop cannot push the value past the top of the bar in `hexa_status`.
+that adds stress in a loop cannot push the value past the top of the bar in the status HUD.
 Anything else is stored as given.
 
 ### GetMetaData
@@ -452,7 +452,7 @@ build anything new on them.
 ## State bags
 
 Four status values plus health live in both `PlayerData.metadata` and the player's state bag.
-`hexa_status` reads the bag; the database stores the metadata. These two methods move values
+The status HUD reads the bag; the database stores the metadata. These two methods move values
 between them, for the keys `hunger`, `thirst`, `cleanliness`, `stress` and `health`.
 
 ### PushStateBags
@@ -527,7 +527,7 @@ Player.Save()
 No return value. Two different paths depending on the object:
 
 - Online: calls `PullStateBags()` first, then `Core.SavePlayer(source)`, which upserts the `users`
-  row and asks `hexa_inventory` to write the satchel.
+  row and asks the inventory resource to write the satchel.
 - Offline: goes straight to `Core.SaveOfflinePlayer(PlayerData)`.
 
 ```lua
@@ -608,7 +608,7 @@ end)
 Player.SetGang(gang, grade)
 ```
 
-Always returns `false`, and changes nothing. It exists because the rsg bridge calls it and this
+Always returns `false`, and changes nothing. It exists because the bridge calls it and this
 server has no gang system; returning `false` is a clearer answer than the `nil` a missing method
 would give.
 

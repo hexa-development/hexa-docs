@@ -31,9 +31,9 @@ more release and print a deprecation warning naming the resource that called the
 - **RedM specifics** — prompts, eagle eye, IPLs and interiors, ped/vehicle density, the coloured
   minimap.
 
-Inventory operations are delegated to `hexa_inventory`. Every call site in `hexa_core` checks that the
-inventory resource is actually started and degrades to a safe return value if it is not, so a stopped
-inventory never turns into a Lua error inside the core.
+Inventory operations are delegated to the inventory resource. Every call site in `hexa_core` checks
+that it is actually started and degrades to a safe return value if it is not, so a stopped inventory
+never turns into a Lua error inside the core.
 
 ## How the database is shaped
 
@@ -144,7 +144,7 @@ end)
 
 ::: tip The old spelling still resolves
 `Core.Functions.GetPlayer(source)` and `Player.Functions.AddMoney(...)` both work today. `.Functions`
-is a real table kept mirrored with the flat one, not a proxy, because the RSG bridge copies methods out
+is a real table kept mirrored with the flat one, not a proxy, because the bridge copies methods out
 of it with `pairs()`. Every legacy call logs one warning per name, naming the calling resource:
 
 ```
@@ -182,7 +182,7 @@ The catalogue verbs are `Core.RegisterItem`, `Core.RegisterItems`, `Core.Unregis
 ::: danger The export named AddItem is the catalogue one
 `exports['hexa_core']:AddItem(name, def)` and `exports['hexa_core']:RemoveItem(name)` are kept
 permanently, and they register and unregister item *definitions* — the same meaning those exports have
-in `rsg-core`, which is why ported scripts drop in unmodified. They do not touch anyone's inventory. To
+elsewhere, which is why ported scripts drop in unmodified. They do not touch anyone's inventory. To
 give a player an item you need the player object.
 :::
 

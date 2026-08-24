@@ -148,11 +148,11 @@ local cash = Player.GetMoney('cash') or 0
 
 ## กระเป๋าและไอเทม
 
-เมธอดกลุ่มนี้ส่งต่อไปที่ `hexa_inventory` ทั้งหมด แต่ละตัวเช็ค
-`GetResourceState('hexa_inventory') == 'started'` ก่อนเสมอ ถ้า inventory หยุดอยู่หรือกำลัง
+เมธอดกลุ่มนี้ส่งต่อไปที่ระบบกระเป๋าทั้งหมด แต่ละตัวเช็ค
+ว่าระบบกระเป๋าอยู่สถานะ `started` ก่อนเสมอ ถ้าระบบกระเป๋าหยุดอยู่หรือกำลัง
 restart มันจะคืนค่าที่ปลอดภัยแทนการโยน error
 
-| เมธอด | ค่าที่คืนเมื่อ `hexa_inventory` ไม่ได้สตาร์ต |
+| เมธอด | ค่าที่คืนเมื่อระบบกระเป๋าไม่ได้สตาร์ต |
 | --- | --- |
 | `AddItem` | `false, false` |
 | `RemoveItem` | `false` |
@@ -208,7 +208,7 @@ Player.RemoveItem(item, amount, slot, reason)
 
 ```lua
 if Player.RemoveItem('lockpick', 1, false, 'lockpick broke') then
-    TriggerClientEvent('hexa_lockpick:client:broke', source)
+    TriggerClientEvent('my_resource:client:lockpickBroke', source)
 end
 ```
 
@@ -355,7 +355,7 @@ Player.SetPlayerData(key, val)
 ```
 
 ไม่คืนค่า เขียนคีย์ชั้นบนสุดของ `PlayerData` แล้วเรียก `SyncPlayerData` ถ้า `key` ไม่ใช่สตริง
-มันจะเงียบและไม่ทำอะไรเลย เมธอดนี้คือทางที่ `hexa_inventory` ใช้เขียน `items` กลับมาทุกครั้ง
+มันจะเงียบและไม่ทำอะไรเลย เมธอดนี้คือทางที่ระบบกระเป๋าใช้เขียน `items` กลับมาทุกครั้ง
 ที่ของในกระเป๋าเปลี่ยน
 
 ```lua
@@ -379,7 +379,7 @@ Player.SetMetaData({ hunger = 100, thirst = 100, stress = 0 })
 ```
 
 `hunger`, `thirst`, `cleanliness` และ `stress` ถูกบีบให้อยู่ในช่วง `0-100` ตอนเขียน
-สคริปต์ที่บวกความเครียดรัว ๆ จึงดันค่าทะลุจนแถบใน `hexa_status` ล้นกรอบไม่ได้
+สคริปต์ที่บวกความเครียดรัว ๆ จึงดันค่าทะลุจนแถบใน HUD สถานะล้นกรอบไม่ได้
 คีย์อื่นเก็บตามที่ส่งมาทุกประการ
 
 ### GetMetaData
@@ -446,7 +446,7 @@ local hunting = Player.GetRep('hunting')
 ## State bags
 
 ค่าสถานะสี่ตัวบวกเลือดอยู่ในสองที่พร้อมกัน คือ `PlayerData.metadata` และ state bag ของผู้เล่น
-`hexa_status` อ่านจาก state bag ส่วนฐานข้อมูลเก็บฝั่ง metadata สองเมธอดนี้คือตัวย้ายค่าระหว่าง
+HUD สถานะอ่านจาก state bag ส่วนฐานข้อมูลเก็บฝั่ง metadata สองเมธอดนี้คือตัวย้ายค่าระหว่าง
 สองที่นั้น สำหรับคีย์ `hunger`, `thirst`, `cleanliness`, `stress` และ `health`
 
 ### PushStateBags
@@ -518,7 +518,7 @@ Player.Save()
 ไม่คืนค่า แยกเป็นสองทางตามชนิดอ็อบเจกต์
 
 - ออนไลน์: เรียก `PullStateBags()` ก่อน แล้วค่อย `Core.SavePlayer(source)` ซึ่ง upsert แถว
-  `users` และสั่ง `hexa_inventory` เขียนกระเป๋า
+  `users` และสั่งระบบกระเป๋าเขียนกระเป๋า
 - ออฟไลน์: ไปที่ `Core.SaveOfflinePlayer(PlayerData)` ตรง ๆ
 
 ```lua
@@ -598,7 +598,7 @@ end)
 Player.SetGang(gang, grade)
 ```
 
-คืน `false` เสมอ และไม่เปลี่ยนอะไรเลย มันมีอยู่เพราะ bridge ของ rsg เรียกถึง และเซิร์ฟนี้
+คืน `false` เสมอ และไม่เปลี่ยนอะไรเลย มันมีอยู่เพราะ bridge เรียกถึง และเซิร์ฟนี้
 ไม่มีระบบแก๊ง การคืน `false` ให้คำตอบที่ชัดกว่าปล่อยให้เป็น `nil` แบบเมธอดที่ไม่มีอยู่
 
 ::: tip

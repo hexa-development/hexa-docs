@@ -293,10 +293,10 @@ server can push. If the data changes rarely, have the client send it once on loa
 server side.
 
 ::: tip
-Ported `rsg-core` scripts that go through `[bridge]/rsg-core` do not hit this: the bridge keeps a real
-queue keyed by name **and** player id, so overlapping `RSGCore.Functions.TriggerClientCallback`
-calls are safe there. That queue belongs to the bridge, not to `hexa_core` - code written directly
-against `Core` gets the single slot described above.
+Ported scripts that go through the bridge do not hit this: the bridge keeps a real queue keyed by
+name **and** player id, so overlapping client callback calls are safe there. That queue belongs to
+the bridge, not to `hexa_core` - code written directly against `Core` gets the single slot described
+above.
 :::
 
 ## The built-in callback
@@ -334,7 +334,7 @@ end)
 ```
 
 `Core.GetUsableItem(item)` returns the registered handler (this was `Core.CanUseItem`), and
-`Core.UseItem(source, item)` forwards to `hexa_inventory`, warning and doing nothing if that
+`Core.UseItem(source, item)` forwards to the inventory resource, warning and doing nothing if that
 resource is not started.
 
 ## Renamed in 3.0

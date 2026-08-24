@@ -302,7 +302,7 @@ Core.CanCarryItem(source, item, amount) --> boolean
 ```
 
 เทียบน้ำหนักของไอเทมจากแคตตาล็อกกับน้ำหนักที่ตัวละครแบกอยู่ คืน `false` เมื่อไม่รู้จักไอเทมนั้น เมื่อผู้เล่นยังไม่โหลด หรือเมื่อ
-`hexa_inventory` ไม่ได้รันอยู่ ถ้าไม่ส่ง `amount` จะถือว่าเป็น `1`
+ระบบกระเป๋าไม่ได้รันอยู่ ถ้าไม่ส่ง `amount` จะถือว่าเป็น `1`
 
 ```lua
 if not Core.CanCarryItem(source, 'bread', 5) then
@@ -318,7 +318,7 @@ end
 Core.HasItem(source, items, amount) --> boolean
 ```
 
-ส่งต่อไปที่ `hexa_inventory` ค่า `items` เป็นชื่อเดี่ยวหรือตารางของชื่อก็ได้ ถ้า resource inventory ไม่ได้สตาร์ตจะคืน `false`
+ส่งต่อไปที่ระบบกระเป๋า ค่า `items` เป็นชื่อเดี่ยวหรือตารางของชื่อก็ได้ ถ้า resource inventory ไม่ได้สตาร์ตจะคืน `false`
 บน player object เรียกได้เป็น `Player.HasItem(items, amount)`
 
 ### CreateUseableItem
@@ -354,7 +354,7 @@ Core.GetUsableItem(item) --> function|nil
 Core.UseItem(source, item)
 ```
 
-สั่งให้ `hexa_inventory` รันขั้นตอนการใช้ไอเทม ถ้า resource inventory ไม่ได้สตาร์ตจะพิมพ์คำเตือนแล้วไม่ทำอะไร
+สั่งให้ระบบกระเป๋ารันขั้นตอนการใช้ไอเทม ถ้า resource inventory ไม่ได้สตาร์ตจะพิมพ์คำเตือนแล้วไม่ทำอะไร
 
 ### SetMaxWeight
 
@@ -385,7 +385,7 @@ Core.GetSlotsByItem(items, itemName)     --> table|nil
 Core.GetFirstSlotByItem(items, itemName) --> number|nil
 ```
 
-เป็นทางผ่านบาง ๆ ไปที่ `hexa_inventory` รับตารางช่องเก็บของเข้ามา (ปกติคือ `Player.PlayerData.items`) ทั้งสามตัวคืน `nil`
+เป็นทางผ่านบาง ๆ ไปที่ระบบกระเป๋า รับตารางช่องเก็บของเข้ามา (ปกติคือ `Player.PlayerData.items`) ทั้งสามตัวคืน `nil`
 เมื่อ resource inventory ไม่ได้สตาร์ต
 
 ### SaveInventory, SaveOfflineInventory
@@ -491,7 +491,7 @@ Core.RegisterJob('ferrier', {
 และทั้งคู่คือฟังก์ชัน **แคตตาล็อก** ตัวเดียวกับ `Core.RegisterItem` และ `Core.UnregisterItem` มันไม่ได้ให้หรือยึดของจากผู้เล่น
 `:AddJob`, `:AddJobs`, `:AddItems`, `:UpdateItem`, `:UpdateJob` และ `:RemoveJob` ก็เป็นแบบเดียวกัน
 
-ถ้าจะย้ายของเข้าออกจากตัวละคร ให้ทำผ่าน player object หรือเรียก `hexa_inventory` ตรง ๆ
+ถ้าจะย้ายของเข้าออกจากตัวละคร ให้ทำผ่าน player object หรือเรียกระบบกระเป๋าตรง ๆ
 :::
 
 ## อาชีพ
@@ -507,7 +507,7 @@ Player.SetJobDuty(true)
 `Player.SetJob(job, grade)` คืน `false` ถ้าอาชีพนั้นไม่มีในแคตตาล็อก เมื่อสำเร็จจะยิง `HexaCore:Server:OnJobUpdate` และ
 `HexaCore:Client:OnJobUpdate` พร้อม sync ให้
 
-`Player.SetGang(gang, grade)` เป็น no-op ที่คืน `false` เสมอ เซิร์ฟนี้ไม่มีระบบแก๊ง เมธอดนี้มีอยู่เพราะ bridge ของ `rsg-core` เรียกหามัน
+`Player.SetGang(gang, grade)` เป็น no-op ที่คืน `false` เสมอ เซิร์ฟนี้ไม่มีระบบแก๊ง เมธอดนี้มีอยู่เพราะ bridge เรียกหามัน
 
 ## สิทธิ์
 
@@ -722,7 +722,7 @@ Core.LogoutPlayer(source)
 Core.LoadPlayer(source, PlayerData) --> table|nil
 ```
 
-เติมค่าเริ่มต้นที่ขาด ตรวจอาชีพกับแคตตาล็อก รวมบัญชีธนาคารสาขาเก่าเข้า `bank` ดึงของในกระเป๋าจาก `hexa_inventory` แล้วประกอบ
+เติมค่าเริ่มต้นที่ขาด ตรวจอาชีพกับแคตตาล็อก รวมบัญชีธนาคารสาขาเก่าเข้า `bank` ดึงของในกระเป๋าจากระบบกระเป๋า แล้วประกอบ
 เป็น player object
 
 ถ้าส่ง source เป็น `nil` จะได้ตัว **offline** กลับมา แต่ถ้าส่ง source จริง มันจะลงทะเบียนตัวนั้นในรายชื่อ เซฟให้หนึ่งรอบ ยิง

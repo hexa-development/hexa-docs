@@ -14,7 +14,7 @@ day one is a warning in the console.
 binds an alias for each old name. Calling an old name forwards the call and prints one warning:
 
 ```
-[hexa_core] [WARN] hexa_banking calls Core.GetSource which was renamed to Core.GetSourceByIdentifier - update the call, the old name goes away next release
+[hexa_core] [WARN] my_resource calls Core.GetSource which was renamed to Core.GetSourceByIdentifier - update the call, the old name goes away next release
 ```
 
 Three things about that warning:
@@ -43,8 +43,8 @@ local a = Core.GetPlayer
 local b = Core.Functions.GetPlayer
 ```
 
-That matters because `[bridge]/rsg-core` copies the table with `pairs()` rather than indexing it one key
-at a time. A metatable-only proxy would have mirrored zero functions and silently killed every ported RSG
+That matters because the bridge copies the table with `pairs()` rather than indexing it one key
+at a time. A metatable-only proxy would have mirrored zero functions and silently killed every ported
 script on the server.
 
 ## The new shape
@@ -267,7 +267,7 @@ is called on.
 
 ## Exports that are kept permanently
 
-The export surface is the one place where the old verbs stay forever. Ported `rsg-core` scripts call
+The export surface is the one place where the old verbs stay forever. Ported scripts call
 `exports['hexa_core']:AddItem(...)` on the catalogue, and rewriting every one of them was not worth it.
 
 ```lua
@@ -327,7 +327,7 @@ never fired it was never saved, and a client that fired it in a loop could hamme
 
 The countdown now lives in `server/save.lua` and the client has no say. `HexaCore:UpdatePlayer` is
 registered with `AddEventHandler`, **not** `RegisterNetEvent`, so a client cannot reach it at all any
-more; it survives only so `[bridge]/rsg-core` can forward a save request from server code, and even that
+more; it survives only so the bridge can forward a save request from server code, and even that
 path is rate limited to one save per player per 30 seconds.
 
 ```lua
@@ -406,7 +406,7 @@ TriggerEvent('hexa_log:server:CreateLog', 'anticheat', 'Anti-Cheat', 'red', mess
 
 ### `Player.SetGang(gang, grade)`
 
-A documented no-op that always returns `false`. This server has no gang system, but the RSG bridge calls
+A documented no-op that always returns `false`. This server has no gang system, but the bridge calls
 the method unconditionally, and returning `false` is better than the `nil` that used to blow up the bridge.
 
 ### `Player.CanCarryItem(item, amount)`

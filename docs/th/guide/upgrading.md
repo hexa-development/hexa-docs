@@ -13,7 +13,7 @@
 แล้วผูก alias ให้ชื่อเก่าทุกตัว เรียกชื่อเก่าก็ส่งต่อให้ปกติ พร้อมพิมพ์เตือนหนึ่งบรรทัด
 
 ```
-[hexa_core] [WARN] hexa_banking calls Core.GetSource which was renamed to Core.GetSourceByIdentifier - update the call, the old name goes away next release
+[hexa_core] [WARN] my_resource calls Core.GetSource which was renamed to Core.GetSourceByIdentifier - update the call, the old name goes away next release
 ```
 
 สามเรื่องที่ต้องรู้เกี่ยวกับข้อความเตือนนี้
@@ -42,8 +42,8 @@ local a = Core.GetPlayer
 local b = Core.Functions.GetPlayer
 ```
 
-เรื่องนี้สำคัญเพราะ `[bridge]/rsg-core` ยกฟังก์ชันไปด้วย `pairs()` ไม่ได้ index ทีละตัว
-ถ้าเป็น proxy เปล่ามันจะยกได้ศูนย์ตัว แล้วสคริปต์ RSG ที่พอร์ตมาทั้งเซิร์ฟจะตายเงียบ
+เรื่องนี้สำคัญเพราะ bridge ยกฟังก์ชันไปด้วย `pairs()` ไม่ได้ index ทีละตัว
+ถ้าเป็น proxy เปล่ามันจะยกได้ศูนย์ตัว แล้วสคริปต์ที่พอร์ตมาทั้งเซิร์ฟจะตายเงียบ
 
 ## หน้าตาแบบใหม่
 
@@ -262,7 +262,7 @@ Player.AddItem('golden_ring', 1)
 
 ## export ที่เก็บไว้ถาวร
 
-ชั้น export คือที่เดียวที่คำกริยาเดิมอยู่ต่อไปแบบถาวร เพราะสคริปต์ `rsg-core` ที่พอร์ตมาเรียก
+ชั้น export คือที่เดียวที่คำกริยาเดิมอยู่ต่อไปแบบถาวร เพราะสคริปต์ที่พอร์ตมาเรียก
 `exports['hexa_core']:AddItem(...)` กับแคตตาล็อกกันหมด และการไล่แก้ทุกตัวไม่คุ้ม
 
 ```lua
@@ -322,7 +322,7 @@ exports['hexa_core']:RemoveItem('golden_ring')
 
 ตอนนี้รอบเวลาอยู่ที่ `server/save.lua` และ client ไม่มีสิทธิ์สั่งอะไรเลย `HexaCore:UpdatePlayer` ถูกลงทะเบียนด้วย
 `AddEventHandler` **ไม่ใช่** `RegisterNetEvent` client จึงยิงถึงไม่ได้แล้ว ที่ยังเก็บไว้ก็เพื่อให้
-`[bridge]/rsg-core` ส่งคำขอเซฟจากฝั่ง server ต่อเข้ามาได้ และเส้นทางนั้นก็ยังติดคูลดาวน์ 30 วินาทีต่อผู้เล่นหนึ่งคน
+bridge ส่งคำขอเซฟจากฝั่ง server ต่อเข้ามาได้ และเส้นทางนั้นก็ยังติดคูลดาวน์ 30 วินาทีต่อผู้เล่นหนึ่งคน
 
 ```lua
 -- 2.x เรียกจากสคริปต์ฝั่ง client แบบนี้ ทำไม่ได้อีกแล้ว
@@ -396,7 +396,7 @@ TriggerEvent('hexa_log:server:CreateLog', 'anticheat', 'Anti-Cheat', 'red', mess
 
 ### `Player.SetGang(gang, grade)`
 
-เป็น no-op ที่ตั้งใจให้เป็นแบบนั้น คืน `false` เสมอ เซิร์ฟนี้ไม่มีระบบแก๊ง แต่ bridge ของ RSG เรียกเมธอดนี้แบบไม่มีเงื่อนไข
+เป็น no-op ที่ตั้งใจให้เป็นแบบนั้น คืน `false` เสมอ เซิร์ฟนี้ไม่มีระบบแก๊ง แต่ bridge เรียกเมธอดนี้แบบไม่มีเงื่อนไข
 คืน `false` ย่อมดีกว่าปล่อยให้เป็น `nil` ซึ่งเดิมทำให้ bridge พัง
 
 ### `Player.CanCarryItem(item, amount)`

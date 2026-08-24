@@ -153,7 +153,7 @@ The seeded labels are Thai, which is why `label` reads the way it does above; th
 always the English identifier and that is what code refers to.
 
 `image` follows the convention `<name>.png`. `useable = true` here only means "not blocked"; whether
-using it actually does something is decided by `Core.CreateUseableItem`. `hexa_inventory`
+using it actually does something is decided by `Core.CreateUseableItem`. The inventory resource
 additionally reads `description` and `combinable` off an
 entry when they are present, so a runtime registration may set them.
 
@@ -307,7 +307,7 @@ batch before sending it, or register one at a time when the input is not fully u
 
 ## The export surface
 
-The catalogue verbs are also exported under their original `rsg` names, permanently, so ported
+The catalogue verbs are also exported under their original names, permanently, so ported
 scripts drop in unmodified:
 
 ```lua
@@ -335,9 +335,9 @@ naming the calling resource.
 
 ## Useable items
 
-Registering a callback is what makes an item do something when a player uses it. `hexa_inventory`
-looks the callback up when the item is used and calls it with the player's server id and the item
-data from the slot.
+Registering a callback is what makes an item do something when a player uses it. The inventory
+resource looks the callback up when the item is used and calls it with the player's server id and
+the item data from the slot.
 
 ```lua
 local Core = exports['hexa_core']:GetCoreObject()
@@ -359,17 +359,17 @@ if Core.GetUsableItem('bandage') then
 end
 ```
 
-`Core.UseItem(source, item)` forwards to `exports['hexa_inventory']:UseItem`, and returns early with
-a warning if `hexa_inventory` is not started. The inventory fires item use by itself when a player
+`Core.UseItem(source, item)` forwards to the inventory resource's `UseItem` export, and returns
+early with a warning if it is not started. The inventory fires item use by itself when a player
 clicks an item, so resources rarely need to call this.
 
 ::: warning The old use events are exploitable
 `HexaCore:Server:UseItem` and `HexaCore:Client:UseItem` still exist but log a deprecation warning
-naming the caller, and are scheduled for removal. Go through `hexa_inventory` instead.
+naming the caller, and are scheduled for removal. Go through the inventory resource instead.
 :::
 
 Two more helpers guard item flow. Both are on the core object and mirrored onto the player object,
-and both return `false` when `hexa_inventory` is not started:
+and both return `false` when the inventory resource is not started:
 
 ```lua
 local Player = Core.GetPlayer(source)
@@ -389,7 +389,8 @@ catalogue at all. `Core.HasItem(source, items, amount)` accepts a string or a ta
 
 ## Items on the player object
 
-These are the player-side inventory methods. All of them delegate to `hexa_inventory` and degrade to
+These are the player-side inventory methods. All of them delegate to the inventory resource and
+degrade to
 a safe value when it is stopped, rather than erroring.
 
 | Method | Returns when the inventory is down |
@@ -439,7 +440,7 @@ fires `HexaCore:Server:OnJobUpdate` plus `HexaCore:Client:OnJobUpdate` with `(so
 that does not exist leaves the placeholder grade in place: level `0`, name `No Grades`, payment `30`.
 
 ::: tip There is no gang system on this server
-`Player.SetGang(gang, grade)` exists and always returns `false`. It is there because the rsg bridge
+`Player.SetGang(gang, grade)` exists and always returns `false`. It is there because the bridge
 calls it. Do not build anything on it.
 :::
 
@@ -465,7 +466,8 @@ Core.SetMaxSlots(source, 40)
 Both write straight to the player's data through `SetPlayerData`. They were `ChangeWeight` and
 `ChangeSlots`; the old names still work and warn once.
 
-`Core.GetTotalWeight(items)` weighs a raw items table, and returns `0` when `hexa_inventory` is not
+`Core.GetTotalWeight(items)` weighs a raw items table, and returns `0` when the inventory resource
+is not
 running.
 
 ## Admin commands

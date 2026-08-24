@@ -101,8 +101,8 @@ carried into the `playermoney` log line the player object emits. `/setmoney` cal
 
 The item name is lowercased and checked against `Core.Shared.Items` first, so a typo reports
 `Item does not exist` rather than handing out a broken stack. `amount` defaults to 1 when omitted or
-unparseable. The command then requires `hexa_inventory` to be in the `started` state and hands the
-item over with `exports['hexa_inventory']:AddItem(source, item, amount)`; without that resource
+unparseable. The command then requires the inventory resource to be in the `started` state and hands the
+item over with the inventory resource's `AddItem(source, item, amount)` export; without that resource
 running it refuses with `Inventory resource not running`.
 
 ## Jobs

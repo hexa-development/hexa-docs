@@ -33,7 +33,7 @@ call from a server file into a client file.
 | `Core.ServerCallbacks` | Pending answers waiting for a server reply, keyed by callback name. |
 | `Core.Functions` | Compatibility mirror. Every function assigned to `Core` is copied into it automatically. |
 
-The mirror is a real table with real members, not a proxy, because the RSG bridge lifts functions out
+The mirror is a real table with real members, not a proxy, because the bridge lifts functions out
 of it with `pairs()`. Reading through it is silent - unlike a renamed function, `Core.Functions.X`
 does not print a warning.
 
@@ -127,8 +127,8 @@ Returns `vector4(x, y, z, heading)` for any entity.
 
 ### Core.HasItem(items, amount)
 
-Asks `hexa_inventory` whether the local player carries `items` - a single item name or a table of
-names - in at least `amount`. Returns `false` immediately if `hexa_inventory` is not started, so a
+Asks the inventory resource whether the local player carries `items` - a single item name or a
+table of names - in at least `amount`. Returns `false` immediately if it is not started, so a
 resource that asks early gets a plain `false` instead of an error.
 
 ```lua

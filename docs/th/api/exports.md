@@ -49,7 +49,7 @@ Player.AddItem('bread', 1)
 `Core.UnregisterItem`, `Core.RegisterItems`, `Core.UpdateItemDefinition`
 
 แต่ **ชื่อฝั่ง export ตั้งใจไม่แตะ** `AddItem`, `AddItems`, `UpdateItem`, `RemoveItem` จะคงชื่อเดิมไว้ถาวร
-เพราะนี่คือรูปแบบที่สคริปต์พอร์ตมาจาก `rsg-core` เรียกอยู่แล้ว ควรวางลงเซิร์ฟนี้แล้วใช้ได้เลยโดยไม่ต้องแก้
+เพราะนี่คือรูปแบบที่สคริปต์พอร์ตมาเรียกอยู่แล้ว ควรวางลงเซิร์ฟนี้แล้วใช้ได้เลยโดยไม่ต้องแก้
 ฝั่งอาชีพก็ใช้กติกาเดียวกัน
 
 ---
@@ -329,7 +329,7 @@ local Core = exports['hexa_core']:GetCoreObject()
 
 ### Prompt
 
-ชุด prompt เป็นแค่สะพานบาง ๆ `hexa_core` ยังเก็บบัญชีรายการ prompt ไว้เอง แต่ส่งงานวาดจริงไปให้ `hexa_interaction`
+ชุด prompt เป็นแค่สะพานบาง ๆ `hexa_core` ยังเก็บบัญชีรายการ prompt ไว้เอง แต่ส่งงานวาดจริงไปให้ระบบ interaction
 ซึ่งเรนเดอร์เป็น HTML overlay สไตล์ RedM แทนระบบ `UiPrompt` ของเนทีฟ
 ชื่อและ signature ของ export ไม่เปลี่ยนเลย resource ที่เขียนไว้ตั้งแต่ 2.x จึงใช้ต่อได้โดยไม่ต้องแก้อะไร
 
@@ -351,7 +351,7 @@ exports['hexa_core']:createPrompt('post_office', coords, 'ENTER', 'Collect mail'
 
 `options.type` ใส่ได้ `'client'` หรือ `'server'` อะไรที่ไม่ใช่ `'client'` จะถูกมองเป็น server event
 `options.args` จะถูก unpack เข้าไปในการเรียก event และ `options.promptLabel` ใช้ทับป้ายปุ่มสั้น ๆ ในเกม
-ถ้าไม่ส่งมา `hexa_interaction` จะตกกลับไปใช้ค่า `text`
+ถ้าไม่ส่งมา ระบบ interaction จะตกกลับไปใช้ค่า `text`
 
 ::: warning อาร์กิวเมนต์ key ถูกมองข้าม
 ทั้งสแตกใช้มาตรฐานเดียวกันหมดคือกด ENTER ค้าง 1000ms ค่า `key` ที่ส่งเข้ามาถูกเก็บไว้ในตาราง prompt
@@ -382,7 +382,7 @@ exports['hexa_core']:deletePromptGroup('stable')
 ```
 
 `getPrompt` และ `getPromptGroup` คืนตารางรายการที่ลงทะเบียนไว้ทั้งก้อน ส่วนคู่ delete จะล้างบัญชีในเครื่อง
-แล้วเรียก `RemovePrompt` / `RemoveGroup` ของ `hexa_interaction` ต่อ ทุกอย่างที่ resource นี้ลงทะเบียนไว้
+แล้วเรียก `RemovePrompt` / `RemoveGroup` ของระบบ interaction ต่อ ทุกอย่างที่ resource นี้ลงทะเบียนไว้
 จะถูกเก็บกวาดอัตโนมัติตอน `onResourceStop`
 
 ### ข้อความบนหน้าจอ
@@ -535,9 +535,9 @@ local weapons = exports['hexa_core']:GetWeapons()
 
 3.0 ไม่ได้ลบ export ตัวใดเลย มีสองส่วนที่เปลี่ยนวิธีทำงานข้างในแต่คงรูปหน้าตาสาธารณะไว้เหมือนเดิม
 
-- **Prompt** ไม่ได้วาดผ่านระบบ `UiPrompt` ของเนทีฟอีกแล้ว ตอนนี้ `hexa_interaction` เป็นคนเรนเดอร์
+- **Prompt** ไม่ได้วาดผ่านระบบ `UiPrompt` ของเนทีฟอีกแล้ว ตอนนี้ระบบ interaction เป็นคนเรนเดอร์
   ส่วน `createPrompt`, `createPromptGroup`, `getPrompt`, `getPromptGroup`, `deletePrompt`
-  และ `deletePromptGroup` ยังอยู่ครบพร้อม signature เดิม โดย `hexa_core` ส่งต่อไปให้ `hexa_interaction` ข้างใน
+  และ `deletePromptGroup` ยังอยู่ครบพร้อม signature เดิม โดย `hexa_core` ส่งต่อไปให้ระบบ interaction ข้างใน
   ผู้เรียกที่เขียนไว้ตั้งแต่ 2.x ไม่ต้องแก้อะไรเลย
 - **ข้อความบนหน้าจอ** ยังเป็น `DrawText`, `ChangeText`, `HideText`, `KeyPressed` เหมือนเดิม
   ตัวที่ทำงานจริงใช้เส้นทาง `CreateVarString` / `DisplayText` ของ RDR3 ตลอดทั้งเส้น
@@ -548,7 +548,7 @@ local weapons = exports['hexa_core']:GetWeapons()
 - `GetStatus`, `SetStatus`, `AddStatus`, `RemoveStatus` ฝั่ง server กับ `GetStatus`, `RefillCores` ฝั่ง client
   ระบบสถานะย้ายการนับเวลามาไว้ฝั่ง server และนี่คือขอบสาธารณะของมัน
 - `EncodeInventory`, `DecodeInventory`, `EncodeLoadout`, `DecodeLoadout`, `BuildSlots`, `IsWeapon`
-  ชุด codec ของกระเป๋าถูกรวมมาไว้ที่เดียว เพื่อไม่ให้ core กับ `hexa_inventory` เขียน `users.inventory`
+  ชุด codec ของกระเป๋าถูกรวมมาไว้ที่เดียว เพื่อไม่ให้ core กับระบบกระเป๋าเขียน `users.inventory`
   ด้วยฟอร์แมตคนละแบบอีกต่อไป
 - `SetZoneColor`, `ResetZoneColor`, `RefreshZoneColors`, `ClearZoneColors` สำหรับระบายสีโซนบนแผนที่
 - `GetCoreVersion` รับชื่อผู้เรียกเป็นอาร์กิวเมนต์เสริมได้แล้ว และพิมพ์ผ่านตัว debug ที่มีสวิตช์ควบคุม

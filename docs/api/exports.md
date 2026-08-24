@@ -51,9 +51,8 @@ The same split applies to `RemoveItem`: the export deletes the definition from t
 On the core object the catalogue verbs were renamed in 3.0 so they can never be confused again -
 `Core.RegisterItem`, `Core.UnregisterItem`, `Core.RegisterItems`, `Core.UpdateItemDefinition`. The
 **export names were deliberately left alone**. `AddItem`, `AddItems`, `UpdateItem` and `RemoveItem`
-keep their old spelling permanently, because that is the shape ported `rsg-core` scripts already
-call, and they should drop into this server without an edit. The same holds for the job
-exports.
+keep their old spelling permanently, because that is the shape ported scripts already call, and
+they should drop into this server without an edit. The same holds for the job exports.
 
 ---
 
@@ -346,7 +345,7 @@ Same contract as the server side: the flat client core table, carrying `Core.Pla
 ### Prompts
 
 The prompt API is a thin bridge. `hexa_core` keeps the registration bookkeeping and hands the actual
-drawing to `hexa_interaction`, which renders the RedM-style HTML overlay instead of the native
+drawing to the interaction resource, which renders the RedM-style HTML overlay instead of the native
 `UiPrompt` system. The export names and signatures did not change, so a resource written against the
 old native prompts keeps working untouched.
 
@@ -368,7 +367,7 @@ exports['hexa_core']:createPrompt('post_office', coords, 'ENTER', 'Collect mail'
 
 `options.type` is `'client'` or `'server'`; anything other than `'client'` is treated as a server
 event. `options.args` is unpacked into the event call. `options.promptLabel` overrides the short
-in-game button label; leave it out and `hexa_interaction` falls back to the `text` argument.
+in-game button label; leave it out and the interaction resource falls back to the `text` argument.
 
 ::: warning The key argument is ignored
 Every prompt in this stack uses the same interaction: hold ENTER for 1000ms. The `key` you pass is
@@ -400,7 +399,7 @@ exports['hexa_core']:deletePromptGroup('stable')
 ```
 
 `getPrompt` and `getPromptGroup` return the whole registration tables. The delete pair clears the
-local bookkeeping and calls `RemovePrompt` / `RemoveGroup` on `hexa_interaction`. Everything this
+local bookkeeping and calls `RemovePrompt` / `RemoveGroup` on the interaction resource. Everything this
 resource registered is torn down automatically on `onResourceStop`.
 
 ### On-screen text
@@ -560,10 +559,11 @@ If you hold the core object, use the 3.0 name. If you call across a resource bou
 
 No export was deleted in 3.0. Two areas changed underneath while keeping their public shape:
 
-- **Prompts** no longer draw through the native `UiPrompt` system. `hexa_interaction` renders them
+- **Prompts** no longer draw through the native `UiPrompt` system. The interaction resource renders
+  them
   now. `createPrompt`, `createPromptGroup`, `getPrompt`, `getPromptGroup`, `deletePrompt` and
   `deletePromptGroup` all still exist with unchanged signatures, and `hexa_core` forwards to
-  `hexa_interaction` internally. A caller written against 2.x needs no edit.
+  the interaction resource internally. A caller written against 2.x needs no edit.
 - **On-screen text** still ships as `DrawText`, `ChangeText`, `HideText` and `KeyPressed`. The
   implementation uses the RDR3 `CreateVarString` / `DisplayText` path throughout.
 
@@ -574,7 +574,7 @@ No export was deleted in 3.0. Two areas changed underneath while keeping their p
 - `GetStatus`, `SetStatus`, `AddStatus`, `RemoveStatus` on the server, `GetStatus` and `RefillCores`
   on the client - the needs system moved its timing to the server, and these are its public edges.
 - `EncodeInventory`, `DecodeInventory`, `EncodeLoadout`, `DecodeLoadout`, `BuildSlots`, `IsWeapon` -
-  the inventory codec was pulled into one place so the core and `hexa_inventory` can no longer write
+  the inventory codec was pulled into one place so the core and the inventory resource can no longer write
   `users.inventory` in two different formats.
 - `SetZoneColor`, `ResetZoneColor`, `RefreshZoneColors`, `ClearZoneColors` - map zone painting.
 - `GetCoreVersion` now takes an optional caller name and logs through the gated debug printer.
