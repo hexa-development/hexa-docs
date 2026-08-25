@@ -188,15 +188,15 @@ local callsign = Player.GetMetaData('callsign')
 Player.SetMetaData({ hunger = 80, thirst = 65 })
 ```
 
-`hunger`, `thirst`, `cleanliness` and `stress` are clamped to the range 0-100 on the way in, whether
-you set them one at a time or as a table. Any other key is stored as given. A key that is neither a
+Every key in `Config.Status.Keys` is clamped to the range 0-100 on the way in, whether you set it one
+at a time or as a table. Any other key is stored as given. A key that is neither a
 string nor a table is ignored.
 
 `GetMetaData` requires a string and returns `nil` for anything else.
 
 ::: warning
-Clients cannot set arbitrary metadata. The net event `HexaCore:Server:SetMetaData` only accepts
-`hunger`, `thirst`, `cleanliness` and `stress`; anything else is refused and logged. Server code
+Clients cannot set arbitrary metadata. The net event `HexaCore:Server:SetMetaData` only accepts keys
+in `Config.Status.Keys`; anything else is refused and logged. Server code
 calls `Player.SetMetaData` directly and is not restricted.
 :::
 
@@ -313,8 +313,8 @@ how many players it saved.
 
 ## State bags
 
-Two methods move the same five keys - `hunger`, `thirst`, `cleanliness`, `stress`, `health` -
-between `PlayerData.metadata` and the FXServer player state bag. The names say which way:
+Two methods move every key in `Config.Status.Keys`, plus `health`, between `PlayerData.metadata` and
+the FXServer player state bag. The names say which way:
 
 | Method | Direction |
 | --- | --- |

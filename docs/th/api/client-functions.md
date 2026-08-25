@@ -26,7 +26,7 @@ local players = Core.GetLocalPlayers()
 | ฟิลด์ | เก็บอะไร |
 | ----- | -------- |
 | `Core.PlayerData` | ข้อมูลตัวละครของผู้เล่นเครื่องนี้ server ส่งมาทาง `HexaCore:Player:SetPlayerData` ก่อนตัวละครโหลดเสร็จจะเป็นตารางว่าง |
-| `Core.Config` | ตาราง `Config` จาก `config.lua` |
+| `Core.Config` | ตาราง `Config` รวมจากทุกไฟล์ใน `config/` |
 | `Core.Shared` | แคตตาล็อกร่วม เช่น `Items`, `Jobs`, `Weapons` จะถูกแทนที่ทั้งก้อนเมื่อ server ส่ง `HexaCore:Client:SharedUpdate` |
 | `Core.ClientCallbacks` | handler ที่ลงทะเบียนไว้ด้วย `Core.CreateCallback` ฝั่งนี้ |
 | `Core.ServerCallbacks` | คำตอบที่ยังรอ server ตอบกลับ เก็บตามชื่อ callback |

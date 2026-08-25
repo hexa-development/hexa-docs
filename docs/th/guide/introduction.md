@@ -99,13 +99,20 @@ hexa_core/
 │   └── keybinds.lua       -- การผูกปุ่ม
 ├── locale/          -- en.lua, th.lua
 ├── stream/          -- ไฟล์ texture ที่ stream เข้าเกม
-├── config.lua       -- การตั้งค่าทั้งหมด
+├── config/           -- แยกหนึ่ง shared file ต่อ subsystem
+│   ├── main.lua            -- ค่าทั่วไปและสร้าง Config ก่อน
+│   ├── player.lua          -- ค่าเริ่มต้นผู้เล่นและตัวละคร
+│   ├── money.lua           -- เศรษฐกิจและเงินเดือน
+│   ├── save.lua            -- รอบบันทึกข้อมูล
+│   ├── status.lua          -- สถานะ การหักเลือด และแกน RDR2
+│   └── ...                 -- log, colormap, density และ eagle eye
 ├── install.sql      -- โครงสร้างฐานข้อมูลและข้อมูลตั้งต้น
 └── fxmanifest.lua
 ```
 
-ลำดับการโหลดสำคัญและเขียนไว้ครบใน `fxmanifest.lua` ถ้าจะแก้ให้จำสองข้อ: `server/storage.lua`
-ต้องมาก่อน `server/player.lua` และไฟล์ `compat.lua` ทั้งสองตัวต้องอยู่ท้ายสุดเสมอ เพราะชั้นรองรับชื่อเก่า
+ลำดับการโหลดสำคัญและเขียนไว้ครบใน `fxmanifest.lua` ถ้าจะแก้ให้จำสามข้อ: `config/main.lua`
+ต้องมาก่อนไฟล์ config อื่น, `server/storage.lua` ต้องมาก่อน `server/player.lua` และไฟล์ `compat.lua`
+ทั้งสองตัวต้องอยู่ท้ายสุดเสมอ เพราะชั้นรองรับชื่อเก่า
 จะผูก alias ได้ก็ต่อเมื่อเห็นฟังก์ชันตัวจริงครบแล้ว
 
 ## การดึง Core Object
@@ -235,6 +242,6 @@ Core.DumpTable(Player.PlayerData)
 ## ไปต่อ
 
 - [การติดตั้ง](/th/guide/installation) — ฐานข้อมูล `server.cfg` และการบูตครั้งแรก
-- [การตั้งค่า](/th/guide/configuration) — ทุกอย่างใน `config.lua`
+- [การตั้งค่า](/th/guide/configuration) — ทุกไฟล์ใน `config/`
 - [Player object](/th/guide/player-object) — เมธอดแบบแบนของตัวผู้เล่น
 - [Server functions](/th/api/server-functions) — API ฝั่ง server ทั้งหมด

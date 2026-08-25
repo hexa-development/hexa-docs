@@ -113,9 +113,10 @@ Player.AddMoney('cash', 100, 'reward')
 | `Core.Player.SaveInventory` | `Core.SaveInventory` |
 | `Core.Player.SaveOfflineInventory` | `Core.SaveOfflineInventory` |
 
-ชั้น compat ไม่ได้ไล่รายชื่อชุดหลังไว้ทีละตัว `Core.Player` เป็นตารางปลอมที่ `__index` ดักคีย์ **ทุกตัว**
-ถ้าตรงกับหกชื่อข้างบนก็แมปให้ ถ้าไม่ตรงก็เอาชื่อเดิมไปหาบน `Core` ตรง ๆ
-`Core.Player.CreateCitizenId()` จึงยังทำงานได้โดยไม่ต้องมีใครไปเขียนชื่อมันไว้
+ตาราง compatibility จะเติมฟังก์ชันทุกตัวที่มีบน `Core` ตอนบูตเป็นสมาชิกจริง แล้วผูกหกชื่อ lifecycle
+เดิมทับลงไป ทำให้ `pairs(Core.Player)` มองเห็นสมาชิกและ bridge mirror namespace ได้ ส่วน `__index`
+ยังเป็น fallback สำหรับฟังก์ชันที่เพิ่มบน `Core` ภายหลัง ถ้าตรงกับหกชื่อข้างบนก็แมปให้ ไม่ตรงก็หา
+ชื่อเดียวกันบน `Core` ดังนั้น `Core.Player.CreateCitizenId()` ยังทำงานได้ แม้โค้ดใหม่ควรเรียกชื่อแบบแบน
 
 ```lua
 -- 2.x
@@ -368,7 +369,7 @@ Player.MarkDirty()
 `Core.SaveAllPlayers()` เขียนทุกคนลงเดี๋ยวนี้แบบไม่เกลี่ยเวลา และคืนจำนวนคนที่เซฟไป
 มันคือตัวที่ตัวรับ `onResourceStop` เรียกใช้ ให้เรียกเองเฉพาะตอนที่รอรอบกวาดไม่ได้จริง ๆ
 
-ชื่อเดิม `Config.UpdateInterval` ยังอ่านค่าได้อยู่ เพราะ `config.lua` เซ็ตค่าให้จาก `Config.Save.Interval`
+ชื่อเดิม `Config.UpdateInterval` ยังอ่านค่าได้อยู่ เพราะ `config/save.lua` เซ็ตค่าให้จาก `Config.Save.Interval`
 
 ### log มีปลายทางแล้ว
 

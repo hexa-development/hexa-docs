@@ -42,7 +42,7 @@ ANSI ไม่เหมือนกัน
 และตอนนี้มีครบทั้งสองฝั่งแล้ว (เดิมมีเฉพาะฝั่ง server และใช้ ANSI)
 
 ```lua
-Core.ShowError(GetCurrentResourceName(), 'config.lua has no Config.Money.MoneyTypes')
+Core.ShowError(GetCurrentResourceName(), 'config/money.lua has no Config.Money.MoneyTypes')
 Core.ShowSuccess(GetCurrentResourceName(), 'loaded 12 shop locations')
 ```
 
@@ -85,7 +85,7 @@ Core.PrintDebug('inventory sync ' .. citizenid .. ' ' .. json.encode(payload))
 ```
 
 ::: tip
-`Config.Debug` อยู่ใน `hexa_core/config.lua` ค่าเริ่มต้นเป็น `false` และเป็นสวิตช์กลางของทั้งเฟรมเวิร์ก
+`Config.Debug` อยู่ใน `hexa_core/config/main.lua` ค่าเริ่มต้นเป็น `false` และเป็นสวิตช์กลางของทั้งเฟรมเวิร์ก
 เปิดทีเดียวบรรทัด `[DEBUG]` ของทุก resource ในสแตกจะโผล่พร้อมกันหมด
 :::
 

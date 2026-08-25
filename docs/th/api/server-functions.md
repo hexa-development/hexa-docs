@@ -51,7 +51,9 @@ local Player = Core.GetPlayer(source)
 | `Core.CreateFingerId` | `Core.CreateFingerprint` |
 | `Core.CreateSerialNumber` | `Core.CreatePhoneSerial` |
 
-เนมสเปซ `Core.Player.*` ทั้งก้อนถูกยุบขึ้นมาอยู่บน `Core` แล้ว ตัว `Core.Player` ยังเหลือไว้ในฐานะตัวส่งต่อที่เตือนก่อนทำงาน
+เนมสเปซ `Core.Player.*` ทั้งก้อนถูกยุบขึ้นมาอยู่บน `Core` แล้ว ตัว `Core.Player` ยังเหลือเป็นตาราง
+compatibility ที่ไล่ด้วย `pairs()` ได้ ฟังก์ชันที่มีตอนบูตเป็นสมาชิกจริงเพื่อให้ bridge mirror ได้
+ส่วน fallback รับฟังก์ชันที่เพิ่มบน `Core` ภายหลัง ทุก call ยังเตือนหนึ่งครั้งแล้วส่งต่อไป flat API
 
 | ชื่อเดิม | เรียกตัวนี้แทน |
 | --- | --- |
@@ -749,7 +751,7 @@ Core.SavePlayer(source)
 จะพิมพ์ error แล้วไม่ทำอะไร ธง dirty ถูกล้างก่อนส่งคิวรี ไม่ใช่หลัง และจะถูกปักกลับถ้าเขียนไม่สำเร็จ เพื่อให้รอบกวาดถัดไปลองใหม่
 
 ::: warning
-`Core.SavePlayer` ไม่ได้ดึงค่าจาก statebag ก่อนเขียน ค่าหิว กระหาย สะอาด เครียด และเลือด จึงมีโอกาสถูกเขียนเป็นค่าเก่า
+`Core.SavePlayer` ไม่ได้ดึงค่าจาก statebag ก่อนเขียน ค่าสถานะใน `Config.Status.Keys` และเลือดจึงมีโอกาสถูกเขียนเป็นค่าเก่า
 ให้เรียก `Player.Save()` แทน ตัวนั้นเรียก `Player.PullStateBags()` ก่อนแล้วค่อยมาที่นี่
 :::
 

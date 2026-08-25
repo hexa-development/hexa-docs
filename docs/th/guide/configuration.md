@@ -1,9 +1,21 @@
 # การตั้งค่า
 
-ทุกอย่างที่ปรับได้ของ hexa_core อยู่ในไฟล์เดียวที่รากของ resource คือ `hexa_core/config.lua`
+ค่าที่ปรับได้ของ hexa_core อยู่ใน `hexa_core/config/` โดยแยกหนึ่งไฟล์ต่อ subsystem `main.lua`
+สร้างตารางกลางก่อน แล้วไฟล์อื่นเติมค่าลงตารางเดียวกันตามลำดับใน `fxmanifest.lua`
 
-ไฟล์นี้ประกาศไว้ใน `fxmanifest.lua` เป็น **shared script** แปลว่าตาราง `Config` ก้อนเดียวกันมีอยู่ทั้งฝั่ง server
-และฝั่ง client ทุกเครื่อง core object เอามาแขวนต่อเป็น `Core.Config` ซึ่งเป็นทางที่ resource อื่นควรใช้อ่าน
+| ไฟล์ | การตั้งค่า |
+| --- | --- |
+| `config/main.lua` | ค่าทั่วไป ระยะ prompt และสัญญาณความปลอดภัยฝั่ง client |
+| `config/player.lua` | ค่าเริ่มต้นผู้เล่น citizen id อาชีพ metadata และการเปิดแผนที่ |
+| `config/money.lua` | ประเภทเงิน กติกาเงินติดลบ และเงินเดือน |
+| `config/save.lua` | รอบเซฟ การเกลี่ยเวลา ตอนหลุด และตอน resource หยุด |
+| `config/status.lua` | รายชื่อสถานะ อัตราลด การหักเลือด และแกน RDR2 |
+| `config/log.lua` | สวิตช์ log และปลายทาง Discord webhook |
+| `config/colormap.lua` | พาเลตต์และโซนบนแผนที่ |
+| `config/density.lua`, `config/eagleeye.lua` | ความหนาแน่นของโลกและสิทธิ์ใช้ Eagle Eye |
+
+ทุกไฟล์ประกาศเป็น **shared script** ตาราง `Config` ที่รวมแล้วจึงมีอยู่ทั้ง server และ client
+core object เอามาแขวนต่อเป็น `Core.Config` ซึ่งเป็นทางที่ resource อื่นควรใช้อ่าน
 
 ```lua
 local Core = exports['hexa_core']:GetCoreObject()
@@ -11,9 +23,9 @@ local Core = exports['hexa_core']:GetCoreObject()
 local minutes = Core.Config.Save.Interval
 ```
 
-และเพราะเป็น shared script การแก้ `config.lua` ต้อง `restart hexa_core` (หรือรีสตาร์ตเซิร์ฟ) ก่อน ทั้งสองฝั่งถึงจะเห็นค่าใหม่
+หลังแก้ไฟล์ใดก็ตามใน `config/` ต้อง `restart hexa_core` (หรือรีสตาร์ตเซิร์ฟ) ก่อน ทั้งสองฝั่งถึงจะเห็นค่าใหม่
 
-::: warning config.lua ไม่ใช่ที่เก็บความลับ
+::: warning โฟลเดอร์ config ไม่ใช่ที่เก็บความลับ
 ตาราง `Config` ทั้งก้อนถูกส่งไปให้ client ห้ามใส่รหัสฐานข้อมูลหรือ API key ลงในไฟล์นี้ และให้เข้าใจไว้ว่า
 `Config.Log.Webhooks` ก็มองเห็นได้จากฝั่ง client เหมือนกัน ให้ถือว่า URL ของ webhook เป็นของกึ่งสาธารณะ
 :::
@@ -127,7 +139,7 @@ Player.MarkDirty()
 `Player.MarkDirty()` มีไว้สำหรับกรณีที่ resource ของคุณไปแก้อะไรลับหลัง core
 
 ::: warning Config.Save.OnDrop ไม่ถูกอ่านใน 3.0.0
-คีย์นี้มีอยู่ใน `config.lua` จริง แต่ไม่มีโค้ดตรงไหนอ่านมันเลย ตัวจับ `playerDropped` ใน `server/events.lua`
+คีย์นี้มีอยู่ใน `config/save.lua` จริง แต่ไม่มีโค้ดตรงไหนอ่านมันเลย ตัวจับ `playerDropped` ใน `server/events.lua`
 เรียก `Player.Save()` ทุกครั้งโดยไม่มีเงื่อนไข ตั้งเป็น `false` ก็หยุดการเขียนตอนหลุดไม่ได้
 :::
 
@@ -310,19 +322,27 @@ Config.Player.PlayerDefaults = {
 `Core.SetMaxWeight` และ `Core.SetMaxSlots`
 :::
 
-ค่าสถานะร่างกายทั้งสี่ (`hunger`, `thirst`, `cleanliness`, `stress`) ก็เริ่มต้นจากที่นี่เหมือนกัน
-คืออยู่ใน `PlayerDefaults.metadata` แล้วถูกขับด้วยหัวข้อถัดไป
+ค่าสถานะร่างกายเริ่มต้น (`hunger`, `thirst`, `cleanliness`, `stress`) ก็เริ่มจาก
+`PlayerDefaults.metadata` ส่วนหัวข้อถัดไปกำหนดว่า metadata คีย์ใดเข้าร่วมระบบสถานะ
 
 ## สถานะร่างกาย
 
 ```lua
 Config.Status = {}
 Config.Status.Enabled = true
+Config.Status.Keys = { 'hunger', 'thirst', 'cleanliness', 'stress' }
 Config.Status.TickInterval = 5
 ```
 
-หิว กระหาย สะอาด และเครียด เป็นค่า `0`-`100` ที่เก็บอยู่ใน metadata ของตัวละคร
-หิว กระหาย สะอาด ยิ่งใกล้ `100` ยิ่งดี ส่วนเครียด `0` คือดีที่สุด
+ทุกชื่อใน `Config.Status.Keys` จะเป็นค่า `0`-`100` ใน metadata และถูกรู้จักโดยลูปฝั่ง server,
+exports, `/setstatus`, whitelist ที่ client เขียนได้, statebag และ cache สถานะฝั่ง client ชื่อจะถูก
+แปลงเป็นตัวพิมพ์เล็กและตัดชื่อซ้ำตอนเริ่มระบบ สี่ชื่อที่แถมมาคือค่าเริ่มต้น โดยหิว กระหาย และสะอาด
+ยิ่งใกล้ `100` ยิ่งดี ส่วนเครียด `0` คือดีที่สุด
+
+การเพิ่มสถานะต้องเพิ่มชื่อใน `Config.Status.Keys`, ใส่ค่าเริ่มต้นใน
+`Config.Player.PlayerDefaults.metadata` และใส่อัตราใน `Config.Status.Drain` ถ้าต้องการให้มันขยับเอง
+ตัวละครเก่าที่ยังไม่มีคีย์จะใช้ค่าเริ่มต้นนั้น หรือใช้ `100` ถ้าไม่ได้กำหนด ส่วนคีย์ที่ไม่มีใน `Drain`
+จะไม่ลดเอง
 
 รอบลดค่าเดินอยู่ฝั่ง **server** ใน `server/status.lua` ไม่ใช่ตัวจับเวลาฝั่ง client ที่ผู้เล่นเลือกจะไม่รันก็ได้
 หน้าที่เดียวของฝั่ง client คือหักเลือดที่ ped จริง ซึ่งเป็นสิ่งที่ทำจากฝั่ง server ไม่ได้
@@ -364,13 +384,15 @@ local status = exports['hexa_core']:GetStatus()
 print(status.hunger, status.thirst, status.cleanliness, status.stress)
 ```
 
-แอดมินตั้งค่าตรง ๆ ได้ด้วย `/setstatus [id] [hunger|thirst|cleanliness|stress] [0-100]`
+แอดมินตั้งค่าตรง ๆ ได้ด้วย `/setstatus [id] [key] [0-100]` โดย `[key]` สร้างจาก
+`Config.Status.Keys`
 
 ### หักเลือดตอนหิวจัด
 
 ```lua
 Config.Status.Damage = {
     enabled   = true,
+    keys      = { 'hunger', 'thirst' },
     threshold = 0,
     interval  = 10000,
     amount    = 5,
@@ -378,6 +400,7 @@ Config.Status.Damage = {
 }
 ```
 
+- **`keys`** — สถานะใน `Config.Status.Keys` ที่จะทำให้เสียเลือดเมื่อแตะ threshold ชื่อที่ไม่รู้จักจะถูกข้าม
 - **`threshold`** — ค่าที่ถือว่า "จัด" ตั้ง `0` แปลว่าต้องหมดเกลี้ยงก่อนถึงจะเริ่มหัก ตั้งสูงขึ้นถ้าอยากให้เจ็บเร็วกว่านั้น
 - **`interval`** — มิลลิวินาทีต่อหนึ่งครั้งที่หัก ค่าต่ำกว่า `1000` จะถูกดันขึ้นเป็น `1000`
 - **`amount`** — หักครั้งละกี่หน่วยเลือด
@@ -418,7 +441,7 @@ exports['hexa_core']:RefillCores()
 exports['hexa_core']:RefillCores(false)
 ```
 
-::: tip เลือดฟื้นเองไม่ได้อยู่ใน config.lua
+::: tip เลือดฟื้นเองไม่ได้ตั้งผ่าน `config/`
 ระบบเลือดฟื้นเองของ RDR2 ถูกปิดไว้ที่ `hexa_core/client/events.lua` ไม่ใช่ที่ไฟล์นี้ ถ้าอยากได้พฤติกรรม
 แบบเกมเดิมกลับมา ให้แก้ตัวคูณสองตัวใน `DisableHealthRecharge` จาก `0.0` เป็น `1.0`
 ส่วน `Config.Status.Cores.enabled = false` แค่คืนแกนทองให้เกมจัดการเองเท่านั้น

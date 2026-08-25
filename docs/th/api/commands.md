@@ -125,8 +125,9 @@ export `AddItem(source, item, amount)` ของระบบกระเป๋�
 | --- | --- | --- |
 | `/setstatus` | `[id] [key] [value]` | admin |
 
-คำสั่งนี้ลงทะเบียนอยู่ใน `server/status.lua` ไม่ได้อยู่ใน `commands.lua` โดย `key` เลือกได้จาก
-`hunger` `thirst` `cleanliness` `stress` และ `value` จะถูกบีบให้อยู่ในช่วง 0-100 เสมอ
+คำสั่งนี้ลงทะเบียนอยู่ใน `server/status.lua` ไม่ได้อยู่ใน `commands.lua` โดย `key` ต้องอยู่ใน
+`Config.Status.Keys` ส่วน help และข้อความวิธีใช้สร้างจากลิสต์นั้น และ `value` จะถูกบีบให้อยู่ในช่วง
+0-100 เสมอ
 การเขียนค่าเดินผ่านเส้นทางเดียวกับ export `SetStatus` จึงอัปเดตทั้ง metadata, statebag ของผู้เล่น
 และ HUD ฝั่ง client ในครั้งเดียว
 

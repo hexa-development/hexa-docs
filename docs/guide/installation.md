@@ -94,7 +94,7 @@ population.
 lacking one.
 :::
 
-Note that the shipped `config.lua` sets `'steam'`. If you want the safe behaviour, change it before
+Note that the shipped `config/main.lua` sets `'steam'`. If you want the safe behaviour, change it before
 your first boot — changing it later re-binds everyone to a different identifier and their existing
 characters stop resolving.
 
@@ -253,7 +253,7 @@ Config.Save.OnResourceStop = true
 `onResourceStop`. Another resource can push a player into the next sweep with `Player.MarkDirty()`.
 
 ::: warning Config.Save.OnDrop is not read
-The key exists in `config.lua`, but nothing in the source reads it. The `playerDropped` handler in
+The key exists in `config/save.lua`, but nothing in the source reads it. The `playerDropped` handler in
 `server/events.lua` calls `Player.Save()` unconditionally. Setting it to `false` does not disable
 the save on drop.
 :::

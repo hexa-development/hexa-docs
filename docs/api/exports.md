@@ -226,9 +226,10 @@ function value. Returns `false, 'invalid_method_name'` or `true, 'success'`.
 
 ### Player status
 
-Hunger, thirst, cleanliness and stress live in `PlayerData.metadata`, are clamped to `0-100`, and
-are drained on a server-side timer configured by `Config.Status`. These four exports are the only
-sanctioned way for another resource to move them.
+The keys listed in `Config.Status.Keys` live in `PlayerData.metadata`, are clamped to `0-100`, and
+can be drained on a server-side timer configured by `Config.Status`. The four shipped keys are
+`hunger`, `thirst`, `cleanliness` and `stress`. These four exports are the sanctioned way for another
+resource to move any configured status.
 
 ```lua
 -- eating
@@ -253,7 +254,7 @@ local hunger = exports['hexa_core']:GetStatus(source, 'hunger')
 
 `GetStatus` returns `nil` when no character is loaded for that source. The writers return the table
 of values they actually applied, or `nil` if nothing valid was passed. Keys outside
-`hunger / thirst / cleanliness / stress` are silently dropped, on purpose - `injail`,
+`Config.Status.Keys` are silently dropped, on purpose - `injail`,
 `criminalrecord` and friends must go through `Player.SetMetaData` instead.
 
 Every write also mirrors the value into the player statebag, so a resource that does not want the
@@ -437,8 +438,10 @@ local all = exports['hexa_core']:GetStatus()
 local hunger = exports['hexa_core']:GetStatus('hunger')
 ```
 
-The client copy of the four status values, kept current by `HexaCore:Client:UpdateNeeds`. It starts
-at `100` for each bar so a HUD never draws empty in the frames before the first server push arrives.
+The client copy of every key in `Config.Status.Keys`, kept current by
+`HexaCore:Client:UpdateNeeds`. Each key starts from its value in
+`Config.Player.PlayerDefaults.metadata` (falling back to `100`) so a HUD does not draw an empty bar
+before the first server push arrives.
 
 ::: warning Same name, different signature
 `GetStatus` exists on both sides. The server one takes `(src, key)`; the client one takes `(key)`

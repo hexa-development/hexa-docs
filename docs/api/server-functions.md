@@ -54,8 +54,10 @@ forwards to the new function. They are removed next release.
 | `Core.CreateFingerId` | `Core.CreateFingerprint` |
 | `Core.CreateSerialNumber` | `Core.CreatePhoneSerial` |
 
-The whole `Core.Player.*` namespace was dissolved into `Core`. `Core.Player` survives as a warning
-shim that forwards any key it can resolve.
+The whole `Core.Player.*` namespace was dissolved into `Core`. `Core.Player` survives as an
+enumerable compatibility table: functions present at boot are real members so bridges can mirror
+them with `pairs()`, while its fallback resolves functions added to `Core` later. Calls still emit a
+one-time deprecation warning and forward to the flat API.
 
 | Old spelling | Call this instead |
 | --- | --- |
@@ -793,7 +795,7 @@ state. Logs an error and does nothing when that id has no character loaded. The 
 before the query is dispatched, and put back if the insert fails so the next sweep retries.
 
 ::: warning
-`Core.SavePlayer` does not pull statebag values first, so hunger, thirst, cleanliness, stress and
+`Core.SavePlayer` does not pull statebag values first, so the statuses in `Config.Status.Keys` and
 health can be written stale. Call `Player.Save()` instead, which does `Player.PullStateBags()` and
 then this.
 :::

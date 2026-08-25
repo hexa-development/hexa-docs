@@ -13,6 +13,9 @@ hero:
       text: API Reference
       link: /th/api/server-functions
     - theme: alt
+      text: Compatibility Bridge
+      link: /th/bridge/
+    - theme: alt
       text: GitHub
       link: https://github.com/hexa-development/hexa_core
 
@@ -29,6 +32,8 @@ features:
     details: ระบบ locale ใช้อังกฤษเป็น fallback และโหลดไทยทีหลังเพื่อให้ไทยชนะ ข้อความที่ผู้เล่นเห็นจึงเป็นไทย ส่วนบรรทัด log ในคอนโซลจงใจให้เป็นอังกฤษ เพราะคอนโซลบางตัวแสดงไทยเพี้ยนและคนไล่ log ต้องกวาดตาเร็ว
   - title: รอบเซฟเป็นของ server
     details: เธรดฝั่ง server กวาดเซฟทุก Config.Save.Interval นาที เขียนเฉพาะคนที่ข้อมูลเปลี่ยนจริง และเกลี่ยการเขียนภายใน Config.Save.SpreadSeconds เพื่อไม่ให้ทั้งเซิร์ฟยิง MySQL พร้อมกันในติกเดียว
+  - title: ย้าย resource เดิมมาได้ทีละตัว
+    details: hexa-bridge ซึ่งเลือกติดตั้งได้มีชั้น compatibility สำหรับ RSG Core และ VORP Core พร้อม mapping เงินและสิทธิ์ที่ชัดเจน รวมถึงระบุ subsystem ที่ไม่รองรับตรงไปตรงมา
 ---
 
 # Hexa Framework
@@ -124,8 +129,8 @@ Player.MarkDirty()
 ```
 
 `Core.SaveAllPlayers()` เขียนทุกคนทันทีและคืนจำนวนคนที่เขียนไป เป็นตัวเดียวกับที่
-`onResourceStop` เรียกตอน `Config.Save.OnResourceStop` เปิดอยู่ ส่วนคนที่หลุด
-ระหว่างสองรอบกวาดมี `Config.Save.OnDrop` รับไว้ให้
+`onResourceStop` เรียกตอน `Config.Save.OnResourceStop` เปิดอยู่ ส่วนคนที่หลุดจะถูก
+`playerDropped` เซฟโดยไม่มีเงื่อนไข คีย์ `Config.Save.OnDrop` ยังคงอยู่แต่โค้ดปัจจุบันไม่ได้อ่าน
 
 ## ระบบ log
 
@@ -150,3 +155,4 @@ Core.DumpTable(Player.PlayerData)
 - [การตั้งค่า](/th/guide/configuration) สำหรับคีย์คอนฟิกทุกตัว
 - [Player object](/th/guide/player-object) สำหรับรายชื่อเมธอดทั้งหมด
 - [Server functions](/th/api/server-functions) และ [client functions](/th/api/client-functions) สำหรับ API reference
+- [Compatibility bridge](/th/bridge/) สำหรับการย้าย resource ของ RSG Core และ VORP Core

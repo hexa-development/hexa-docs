@@ -1,10 +1,22 @@
 # Configuration
 
-Everything hexa_core can be tuned from lives in a single file at the root of the resource:
-`hexa_core/config.lua`.
+hexa_core keeps its settings in `hexa_core/config/`, one file per subsystem. `main.lua` creates the
+shared table and must load first; the other files extend that same table in the order declared by
+`fxmanifest.lua`.
 
-It is declared in `fxmanifest.lua` as a **shared script**, so the exact same `Config` table exists on
-the server and on every client. The core object republishes it as `Core.Config`, which is how other
+| File | Settings |
+| --- | --- |
+| `config/main.lua` | server-wide settings, prompt distances and client-side security signals |
+| `config/player.lua` | player defaults, citizen ids, starting job, metadata and map reveal |
+| `config/money.lua` | money types, negative-balance rules and paychecks |
+| `config/save.lua` | save interval, spreading, drop and resource-stop behaviour |
+| `config/status.lua` | status keys, drain, damage and RDR2 cores |
+| `config/log.lua` | log switch and Discord webhook destinations |
+| `config/colormap.lua` | map-zone palette and zones |
+| `config/density.lua`, `config/eagleeye.lua` | world density and Eagle Eye access |
+
+All of these files are declared as **shared scripts**, so their combined `Config` table exists on the
+server and on every client. The core object republishes it as `Core.Config`, which is how other
 resources should read it:
 
 ```lua
@@ -13,10 +25,10 @@ local Core = exports['hexa_core']:GetCoreObject()
 local minutes = Core.Config.Save.Interval
 ```
 
-Because it is a shared script, a change to `config.lua` needs a `restart hexa_core` (or a server
-restart) before either side sees it.
+After changing any file in `config/`, run `restart hexa_core` (or restart the server) before either
+side sees the new value.
 
-::: warning Config is not a security boundary
+::: warning The config directory is not a security boundary
 The whole `Config` table is shipped to clients. Never put a database password, an API key, or a
 Discord webhook you would mind a player reading into anything other than the keys documented here as
 server-side, and understand that `Config.Log.Webhooks` is visible to clients too. Treat webhook URLs
@@ -141,7 +153,7 @@ Any core call that mutates player data already marks the player dirty through `P
 `Player.MarkDirty()` exists for the case where your resource changed something behind the core's back.
 
 ::: warning Config.Save.OnDrop is not read in 3.0.0
-The key exists in `config.lua`, but nothing in the resource reads it. The `playerDropped` handler in
+The key exists in `config/save.lua`, but nothing in the resource reads it. The `playerDropped` handler in
 `server/events.lua` calls `Player.Save()` unconditionally, so a drop is always saved regardless of
 what this key is set to. Setting it to `false` will not stop that write.
 :::
@@ -333,19 +345,28 @@ percentage based: an item's weight is a percentage of the 100 a character can ca
 go through `Core.SetMaxWeight` and `Core.SetMaxSlots`.
 :::
 
-The four body-status values (`hunger`, `thirst`, `cleanliness`, `stress`) start here too, in
-`PlayerDefaults.metadata`, and are driven by the next section.
+The default body-status values (`hunger`, `thirst`, `cleanliness`, `stress`) start here too, in
+`PlayerDefaults.metadata`. The next section defines which metadata keys participate in the status
+system.
 
 ## Body status
 
 ```lua
 Config.Status = {}
 Config.Status.Enabled = true
+Config.Status.Keys = { 'hunger', 'thirst', 'cleanliness', 'stress' }
 Config.Status.TickInterval = 5
 ```
 
-Hunger, thirst, cleanliness and stress are `0`-`100` values stored in the character's metadata.
-For hunger, thirst and cleanliness, `100` is best. For stress, `0` is best.
+Every name in `Config.Status.Keys` becomes a `0`-`100` value stored in character metadata and is
+recognised by the server loop, exports, `/setstatus`, client-write allowlist, statebags and client
+status cache. Names are lowercased and duplicates are removed at startup. The four shipped names are
+the defaults; for hunger, thirst and cleanliness `100` is best, while for stress `0` is best.
+
+To add a status, add its name to `Config.Status.Keys`, add its starting value to
+`Config.Player.PlayerDefaults.metadata`, and optionally give it a `Config.Status.Drain` rate. An
+existing character missing that metadata key uses the configured default; if no default exists it
+uses `100`. A key absent from `Drain` does not move on its own.
 
 The drain loop runs on the **server** (`server/status.lua`). It is not a client timer that the client
 could simply decline to run. The client's only job is applying damage to the actual ped, which cannot
@@ -390,13 +411,15 @@ local status = exports['hexa_core']:GetStatus()
 print(status.hunger, status.thirst, status.cleanliness, status.stress)
 ```
 
-Admins can set a value directly with `/setstatus [id] [hunger|thirst|cleanliness|stress] [0-100]`.
+Admins can set a value directly with `/setstatus [id] [key] [0-100]`; `[key]` is generated from
+`Config.Status.Keys`.
 
 ### Starvation damage
 
 ```lua
 Config.Status.Damage = {
     enabled   = true,
+    keys      = { 'hunger', 'thirst' },
     threshold = 0,
     interval  = 10000,
     amount    = 5,
@@ -404,6 +427,7 @@ Config.Status.Damage = {
 }
 ```
 
+- **`keys`** — the configured statuses that cause damage at the threshold. Unknown names are ignored.
 - **`threshold`** — the value at or below which a player counts as starving. `0` means completely empty.
   Raise it to start hurting people earlier.
 - **`interval`** — milliseconds between damage ticks. Values below `1000` are raised to `1000`.
@@ -449,7 +473,7 @@ exports['hexa_core']:RefillCores()
 exports['hexa_core']:RefillCores(false)
 ```
 
-::: tip Health regeneration is not in config.lua
+::: tip Health regeneration is not configurable in `config/`
 RDR2's passive health regeneration is switched off in `hexa_core/client/events.lua`, not here. If you
 want the vanilla behaviour back, change the two multipliers in `DisableHealthRecharge` from `0.0` to
 `1.0`. `Config.Status.Cores.enabled = false` only hands the gold cores back to the game.

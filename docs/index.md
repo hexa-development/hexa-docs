@@ -13,6 +13,9 @@ hero:
       text: API Reference
       link: /api/server-functions
     - theme: alt
+      text: Compatibility Bridge
+      link: /bridge/
+    - theme: alt
       text: GitHub
       link: https://github.com/hexa-development/hexa_core
 
@@ -29,6 +32,8 @@ features:
     details: A locale instance with English as the fallback and Thai loaded last, so player-facing strings follow the server language. Console log lines stay English on purpose - operators scan them fast and some consoles mangle Thai.
   - title: The server owns the save cadence
     details: A server thread sweeps every Config.Save.Interval minutes, writes only players marked dirty, and spreads the writes over Config.Save.SpreadSeconds so a full server does not hit MySQL in one tick.
+  - title: Bring existing resources with you
+    details: The optional hexa-bridge exposes documented RSG Core and VORP Core compatibility layers, with explicit money and permission mapping and clear boundaries for unsupported subsystems.
 ---
 
 # Hexa Framework
@@ -127,7 +132,8 @@ Player.MarkDirty()
 
 `Core.SaveAllPlayers()` writes everyone immediately and returns how many were
 written; it is what `onResourceStop` calls when `Config.Save.OnResourceStop` is
-left on. `Config.Save.OnDrop` covers the player who disconnects between sweeps.
+left on. Disconnects are saved unconditionally by `playerDropped`; the shipped
+`Config.Save.OnDrop` key is retained but is not currently read.
 
 ## Logging
 
@@ -152,3 +158,4 @@ Discord when a URL is set in `Config.Log.Webhooks`.
 - [Configuration](/guide/configuration) for every config key
 - [Player object](/guide/player-object) for the full method list
 - [Server functions](/api/server-functions) and [client functions](/api/client-functions) for the API reference
+- [Compatibility bridges](/bridge/) for RSG Core and VORP Core migration

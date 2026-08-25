@@ -165,8 +165,8 @@ left to queue.
 
 ### Why it must go through Player.Save()
 
-`Core.SavePlayer(source)` builds the row out of `PlayerData` as it currently stands. Live status
-values - `hunger`, `thirst`, `cleanliness`, `stress`, `health` - do not live in `PlayerData` while the
+`Core.SavePlayer(source)` builds the row out of `PlayerData` as it currently stands. Live values for
+every key in `Config.Status.Keys`, plus `health`, do not live in `PlayerData` while the
 player is online; they live in that player's statebag and are only copied back by
 `Player.PullStateBags()`.
 
@@ -183,7 +183,7 @@ end
 
 Earlier code called `Core.SavePlayer(src)` directly on resource stop, which skipped `PullStateBags`
 and therefore wrote the stale metadata from whenever the values were last synced. Every restart reset
-hunger, thirst, cleanliness and stress. `Core.SaveAllPlayers()` calls `Player.Save()`, so the
+the configured statuses. `Core.SaveAllPlayers()` calls `Player.Save()`, so the
 statebags are flushed into metadata before the row is built.
 
 The mirror of this runs at load: `Player.PushStateBags()` copies those same keys out of metadata and

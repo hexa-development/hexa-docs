@@ -158,7 +158,7 @@ end)
 ### ทำไมต้องผ่าน Player.Save()
 
 `Core.SavePlayer(source)` ประกอบแถวจาก `PlayerData` เท่าที่มีอยู่ ณ ตอนนั้น แต่ค่าสถานะที่เดินอยู่จริง
-คือ `hunger`, `thirst`, `cleanliness`, `stress`, `health` ไม่ได้อยู่ใน `PlayerData` ระหว่างที่ผู้เล่น
+คือทุกคีย์ใน `Config.Status.Keys` บวก `health` ไม่ได้อยู่ใน `PlayerData` ระหว่างที่ผู้เล่น
 ออนไลน์ มันอยู่ใน statebag ของคนนั้น และถูกคัดลอกกลับมาด้วย `Player.PullStateBags()` เท่านั้น
 
 ```lua
@@ -173,7 +173,7 @@ end
 ```
 
 โค้ดเดิมเรียก `Core.SavePlayer(src)` ตรง ๆ ตอน resource หยุด ซึ่งข้าม `PullStateBags` ไป จึงเขียน
-metadata เก่าค้างจากตอนที่ sync ครั้งล่าสุด ผลคือทุกครั้งที่ restart ค่าหิว กระหาย สะอาด เครียด จะเด้ง
+metadata เก่าค้างจากตอนที่ sync ครั้งล่าสุด ผลคือทุกครั้งที่ restart ค่าสถานะที่ตั้งไว้จะเด้ง
 กลับหมด ตอนนี้ `Core.SaveAllPlayers()` เรียกผ่าน `Player.Save()` ค่าใน statebag จึงถูกเทกลับเข้า
 metadata ก่อนประกอบแถวเสมอ
 

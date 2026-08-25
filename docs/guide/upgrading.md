@@ -116,9 +116,12 @@ Everything else on that namespace kept its leaf name and simply moved up a level
 | `Core.Player.SaveInventory` | `Core.SaveInventory` |
 | `Core.Player.SaveOfflineInventory` | `Core.SaveOfflineInventory` |
 
-The compat layer does not enumerate that second list. `Core.Player` is a stand-in table whose `__index`
-catches **any** key, maps it through the six renames above if it matches, and otherwise looks for the bare
-name on `Core`. So `Core.Player.CreateCitizenId()` keeps working without anyone having listed it.
+The compatibility table is populated with every function present on `Core` at boot, then the six old
+lifecycle names above are bound over it. That makes `pairs(Core.Player)` return real members, which is
+required by compatibility bridges that mirror the namespace. Its `__index` fallback still catches a
+function added to `Core` later, maps the six renamed forms when needed, and otherwise looks for the
+same bare name. `Core.Player.CreateCitizenId()` therefore keeps working even though new code should
+call the flat name.
 
 ```lua
 -- 2.x
@@ -377,7 +380,7 @@ Player.MarkDirty()
 `Core.SaveAllPlayers()` writes everyone immediately with no stagger and returns how many it saved. It is
 what the `onResourceStop` handler calls; use it only when you really cannot wait.
 
-The old `Config.UpdateInterval` still reads, because `config.lua` assigns it from `Config.Save.Interval`.
+The old `Config.UpdateInterval` still reads, because `config/save.lua` assigns it from `Config.Save.Interval`.
 
 ### Logs finally have a destination
 

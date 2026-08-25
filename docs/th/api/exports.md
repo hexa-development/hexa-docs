@@ -215,8 +215,9 @@ end)
 
 ### สถานะร่างกายของผู้เล่น
 
-ค่า hunger / thirst / cleanliness / stress เก็บอยู่ใน `PlayerData.metadata` ถูกบีบให้อยู่ในช่วง `0-100`
-และมีรอบลดค่าเดินอยู่ฝั่ง server ตาม `Config.Status` export สี่ตัวนี้คือทางเดียวที่ resource อื่นควรใช้ขยับค่าพวกนี้
+คีย์ใน `Config.Status.Keys` เก็บอยู่ใน `PlayerData.metadata` ถูกบีบให้อยู่ในช่วง `0-100`
+และสามารถมีรอบลดค่าฝั่ง server ตาม `Config.Status` สี่คีย์ที่แถมมาคือ hunger / thirst /
+cleanliness / stress และ export สี่ตัวนี้คือทางที่ resource อื่นควรใช้ขยับสถานะที่ตั้งค่าไว้
 
 ```lua
 -- กินอาหาร
@@ -240,7 +241,7 @@ local hunger = exports['hexa_core']:GetStatus(source, 'hunger')
 ```
 
 `GetStatus` คืน `nil` ถ้ายังไม่มีตัวละครโหลดอยู่กับ source นั้น ส่วนตัวที่เขียนค่าจะคืนตารางของค่าที่ลงจริง
-หรือ `nil` ถ้าไม่มีอะไรถูกต้องเลยสักช่อง คีย์ที่ไม่ใช่สี่ตัวนี้จะถูกทิ้งเงียบ ๆ ซึ่งตั้งใจให้เป็นแบบนั้น
+หรือ `nil` ถ้าไม่มีอะไรถูกต้องเลยสักช่อง คีย์ที่ไม่อยู่ใน `Config.Status.Keys` จะถูกทิ้งเงียบ ๆ ซึ่งตั้งใจให้เป็นแบบนั้น
 เพราะ `injail`, `criminalrecord` และเพื่อน ๆ ต้องผ่าน `Player.SetMetaData` เท่านั้น
 
 ทุกครั้งที่เขียน ค่าจะถูกมิเรอร์ลง statebag ของผู้เล่นด้วย resource ที่ไม่อยากยุ่งกับ core object เลย
@@ -420,8 +421,9 @@ local all = exports['hexa_core']:GetStatus()
 local hunger = exports['hexa_core']:GetStatus('hunger')
 ```
 
-สำเนาค่าสถานะสี่ตัวฝั่ง client ที่ถูกอัปเดตด้วย `HexaCore:Client:UpdateNeeds`
-ค่าเริ่มต้นตั้งไว้ที่ `100` ทุกช่อง เพื่อไม่ให้ HUD วาดแถบว่างเปล่าในไม่กี่เฟรมก่อนก้อนแรกจาก server จะมาถึง
+สำเนาทุกคีย์ใน `Config.Status.Keys` ฝั่ง client ที่อัปเดตด้วย `HexaCore:Client:UpdateNeeds`
+แต่ละคีย์เริ่มจาก `Config.Player.PlayerDefaults.metadata` และถอยไป `100` ถ้าไม่มีค่า เพื่อไม่ให้ HUD
+วาดแถบว่างก่อนก้อนแรกจาก server มาถึง
 
 ::: warning ชื่อเดียวกัน แต่ signature คนละแบบ
 `GetStatus` มีทั้งสองฝั่ง ฝั่ง server รับ `(src, key)` ส่วนฝั่ง client รับแค่ `(key)` ใช้แทนกันไม่ได้

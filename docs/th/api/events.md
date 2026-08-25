@@ -42,7 +42,7 @@ RegisterNetEvent('HexaCore:Server:RequestStatus', function() end)
 | `HexaCore:Server:RequestSpawn` | ไม่มี | ได้ ตั้งใจให้ยิง | มีธงกันยิงซ้ำต่อคน ถ้า login แล้วจะส่งข้อมูล spawn เดิมกลับไปใหม่ |
 | `HexaCore:Server:OnPlayerLoaded` | ไม่มี | ได้ ตั้งใจให้ยิง | การกระทบยอดไอเทมเงินทำครั้งเดียวต่อการเข้าเกมหนึ่งครั้ง |
 | `HexaCore:Server:RequestStatus` | ไม่มี | ได้ ตั้งใจให้ยิง | อ่านอย่างเดียว และตอบกลับเฉพาะคนที่ขอ |
-| `HexaCore:Server:SetMetaData` | `meta` (string), `data` (number หรือ boolean) | ได้ เฉพาะคีย์ในลิสต์ | รับแค่ `hunger`, `thirst`, `cleanliness`, `stress` |
+| `HexaCore:Server:SetMetaData` | `meta` (string), `data` (number หรือ boolean) | ได้ เฉพาะคีย์ในลิสต์ | รับเฉพาะคีย์ใน `Config.Status.Keys` |
 | `HexaCore:ToggleDuty` | ไม่มี | ได้ | ไม่มีด่านอื่นนอกจาก "ต้องมีตัวละครโหลดอยู่" |
 | `HexaCore:CallCommand` | `command` (string), `args` (table) | ได้ | เช็ค `Core.HasPermission(src, 'command.' .. name)` |
 | `HexaCore:Server:TriggerCallback` | `name` (string), `...` | ได้ ตั้งใจให้ยิง | ตัว callback ต้องตรวจสิทธิ์เอง |
@@ -61,7 +61,8 @@ login ให้ (ถ้ายังไม่มีก็สร้างใหม
 
 ### HexaCore:Server:SetMetaData
 
-คีย์ metadata ที่ client เขียนเองได้มีแค่สี่ค่าสถานะร่างกาย นอกนั้นถูกปฏิเสธและบันทึกไอดีคนยิงไว้
+คีย์ metadata ที่ client เขียนเองได้มีเฉพาะชื่อใน `Config.Status.Keys` นอกนั้นถูกปฏิเสธและบันทึก
+ไอดีคนยิงไว้ ให้ใส่ในลิสต์เฉพาะค่าที่อนุญาตให้ผู้เล่นรายงานได้
 
 ```lua
 -- คีย์ที่อนุญาตให้ยิงจากฝั่ง client

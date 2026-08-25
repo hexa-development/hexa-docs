@@ -186,15 +186,15 @@ local callsign = Player.GetMetaData('callsign')
 Player.SetMetaData({ hunger = 80, thirst = 65 })
 ```
 
-คีย์ `hunger`, `thirst`, `cleanliness` และ `stress` จะถูกบีบให้อยู่ในช่วง 0-100 ตอนเขียนเสมอ
+ทุกคีย์ใน `Config.Status.Keys` จะถูกบีบให้อยู่ในช่วง 0-100 ตอนเขียนเสมอ
 ไม่ว่าจะเขียนทีละตัวหรือส่งมาเป็นตาราง คีย์อื่นเก็บตามที่ส่งมา ส่วนค่าที่ไม่ใช่สตริงและไม่ใช่ตารางจะถูก
 ปล่อยผ่านไปเฉย ๆ
 
 `GetMetaData` ต้องรับสตริงเท่านั้น อย่างอื่นคืน `nil`
 
 ::: warning
-ฝั่ง client ตั้งค่า metadata ตามใจไม่ได้ net event `HexaCore:Server:SetMetaData` รับแค่
-`hunger`, `thirst`, `cleanliness`, `stress` เท่านั้น คีย์อื่นจะถูกปฏิเสธและถูกบันทึกไว้ ส่วนโค้ดฝั่ง
+ฝั่ง client ตั้งค่า metadata ตามใจไม่ได้ net event `HexaCore:Server:SetMetaData` รับเฉพาะคีย์ใน
+`Config.Status.Keys` คีย์อื่นจะถูกปฏิเสธและถูกบันทึกไว้ ส่วนโค้ดฝั่ง
 server เรียก `Player.SetMetaData` ได้ตรง ๆ ไม่ติดข้อจำกัดนี้
 :::
 
@@ -306,8 +306,8 @@ Player.MarkDirty()
 
 ## State bag
 
-มีสองเมธอดที่ย้ายค่าห้าตัวเดียวกัน คือ `hunger`, `thirst`, `cleanliness`, `stress`, `health`
-ไปมาระหว่าง `PlayerData.metadata` กับ state bag ของผู้เล่น ชื่อเมธอดบอกทิศทางไว้แล้ว
+มีสองเมธอดที่ย้ายทุกคีย์ใน `Config.Status.Keys` บวก `health` ไปมาระหว่าง
+`PlayerData.metadata` กับ state bag ของผู้เล่น ชื่อเมธอดบอกทิศทางไว้แล้ว
 
 | เมธอด | ทิศทาง |
 | --- | --- |

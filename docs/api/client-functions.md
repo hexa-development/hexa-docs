@@ -27,7 +27,7 @@ call from a server file into a client file.
 | Field | What it holds |
 | ----- | ------------- |
 | `Core.PlayerData` | The local player's data table, pushed by the server through `HexaCore:Player:SetPlayerData`. Empty until the character loads. |
-| `Core.Config` | The shared `Config` table from `config.lua`. |
+| `Core.Config` | The combined shared `Config` table from the files in `config/`. |
 | `Core.Shared` | The shared catalogue: `Items`, `Jobs`, `Weapons` and the rest. Replaced wholesale when the server sends `HexaCore:Client:SharedUpdate`. |
 | `Core.ClientCallbacks` | Handlers registered with `Core.CreateCallback` on this side. |
 | `Core.ServerCallbacks` | Pending answers waiting for a server reply, keyed by callback name. |

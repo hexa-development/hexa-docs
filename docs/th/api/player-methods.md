@@ -378,8 +378,8 @@ Player.SetMetaData('callsign', '1-Lincoln-18')
 Player.SetMetaData({ hunger = 100, thirst = 100, stress = 0 })
 ```
 
-`hunger`, `thirst`, `cleanliness` และ `stress` ถูกบีบให้อยู่ในช่วง `0-100` ตอนเขียน
-สคริปต์ที่บวกความเครียดรัว ๆ จึงดันค่าทะลุจนแถบใน HUD สถานะล้นกรอบไม่ได้
+ทุกคีย์ใน `Config.Status.Keys` ถูกบีบให้อยู่ในช่วง `0-100` ตอนเขียน สคริปต์ที่ขยับสถานะรัว ๆ
+จึงดันค่าทะลุช่วงของ HUD สถานะไม่ได้
 คีย์อื่นเก็บตามที่ส่งมาทุกประการ
 
 ### GetMetaData
@@ -445,9 +445,9 @@ local hunting = Player.GetRep('hunting')
 
 ## State bags
 
-ค่าสถานะสี่ตัวบวกเลือดอยู่ในสองที่พร้อมกัน คือ `PlayerData.metadata` และ state bag ของผู้เล่น
+สถานะทุกตัวที่ตั้งค่าบวกเลือดอยู่ในสองที่พร้อมกัน คือ `PlayerData.metadata` และ state bag ของผู้เล่น
 HUD สถานะอ่านจาก state bag ส่วนฐานข้อมูลเก็บฝั่ง metadata สองเมธอดนี้คือตัวย้ายค่าระหว่าง
-สองที่นั้น สำหรับคีย์ `hunger`, `thirst`, `cleanliness`, `stress` และ `health`
+สองที่นั้น สำหรับทุกคีย์ใน `Config.Status.Keys` บวก `health`
 
 ### PushStateBags
 

@@ -382,8 +382,8 @@ Player.SetMetaData('callsign', '1-Lincoln-18')
 Player.SetMetaData({ hunger = 100, thirst = 100, stress = 0 })
 ```
 
-`hunger`, `thirst`, `cleanliness` and `stress` are clamped into `0-100` on the way in, so a script
-that adds stress in a loop cannot push the value past the top of the bar in the status HUD.
+Every key in `Config.Status.Keys` is clamped into `0-100` on the way in, so a script that changes a
+configured status in a loop cannot push it past the status HUD range.
 Anything else is stored as given.
 
 ### GetMetaData
@@ -451,9 +451,9 @@ build anything new on them.
 
 ## State bags
 
-Four status values plus health live in both `PlayerData.metadata` and the player's state bag.
+Every configured status plus health lives in both `PlayerData.metadata` and the player's state bag.
 The status HUD reads the bag; the database stores the metadata. These two methods move values
-between them, for the keys `hunger`, `thirst`, `cleanliness`, `stress` and `health`.
+between them, for every key in `Config.Status.Keys` plus `health`.
 
 ### PushStateBags
 

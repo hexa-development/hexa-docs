@@ -98,14 +98,21 @@ hexa_core/
 │   └── keybinds.lua       -- key mappings
 ├── locale/          -- en.lua, th.lua
 ├── stream/          -- streamed textures
-├── config.lua       -- every setting
+├── config/           -- one shared file per configurable subsystem
+│   ├── main.lua            -- general settings; creates Config first
+│   ├── player.lua          -- player and character defaults
+│   ├── money.lua           -- economy and paychecks
+│   ├── save.lua            -- persistence cadence
+│   ├── status.lua          -- needs, damage and RDR2 cores
+│   └── ...                 -- logging, colormap, density and eagle eye
 ├── install.sql      -- schema and seed data
 └── fxmanifest.lua
 ```
 
-Load order matters and is spelled out in `fxmanifest.lua`. Two rules to know if you ever edit it:
-`server/storage.lua` must load before `server/player.lua`, and both `compat.lua` files must load last,
-because the compatibility layer can only alias functions that already exist.
+Load order matters and is spelled out in `fxmanifest.lua`. Three rules to know if you ever edit it:
+`config/main.lua` must load before the other config files, `server/storage.lua` must load before
+`server/player.lua`, and both `compat.lua` files must load last because the compatibility layer can
+only alias functions that already exist.
 
 ## Getting the core object
 
@@ -234,6 +241,6 @@ console and forwards it to a Discord webhook if one is configured for that categ
 ## Next steps
 
 - [Installation](/guide/installation) — database, `server.cfg`, first boot
-- [Configuration](/guide/configuration) — everything in `config.lua`
+- [Configuration](/guide/configuration) — every file in `config/`
 - [Player object](/guide/player-object) — the flat player methods
 - [Server functions](/api/server-functions) — the full server API

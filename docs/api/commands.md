@@ -126,8 +126,9 @@ a character is loaded, and from the console, by notifying `Player not online` in
 | --- | --- | --- |
 | `/setstatus` | `[id] [key] [value]` | admin |
 
-Registered in `server/status.lua`, not in `commands.lua`. `key` is one of `hunger`, `thirst`,
-`cleanliness` or `stress`; `value` is clamped into 0-100. The write goes through the same path as
+Registered in `server/status.lua`, not in `commands.lua`. `key` must be listed in
+`Config.Status.Keys`; `value` is clamped into 0-100. The help and usage text are generated from that
+list. The write goes through the same path as
 the `SetStatus` export, so it updates metadata, the player statebag and the client HUD in one step.
 
 ::: warning /setstatus takes a server id

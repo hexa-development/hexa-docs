@@ -202,6 +202,12 @@ hexa-docs/
 │   ├── api/
 │   │   └── ...
 │   │
+│   ├── bridge/
+│   │   └── ...
+│   │
+│   ├── th/
+│   │   └── ...
+│   │
 │   └── public/
 │       └── ...
 │
@@ -217,6 +223,7 @@ hexa-docs/
 | `docs/index.md`      | Documentation landing page                                    |
 | `docs/guide/`        | Installation guides and framework concepts                    |
 | `docs/api/`          | API and developer reference                                   |
+| `docs/bridge/`       | RSG and VORP compatibility reference                          |
 | `docs/public/`       | Static assets                                                 |
 | `.github/workflows/` | Automated build and deployment workflows                      |
 
@@ -236,7 +243,7 @@ Access a player through Hexa Core:
 ```lua
 local HexaCore = exports['hexa_core']:GetCoreObject()
 
-local Player = HexaCore.Functions.GetPlayer(source)
+local Player = HexaCore.GetPlayer(source)
 ````
 
 ````
@@ -285,13 +292,13 @@ A typical API reference should clearly show the environment and expected behavio
 ```lua
 local HexaCore = exports['hexa_core']:GetCoreObject()
 
-local Player = HexaCore.Functions.GetPlayer(source)
+local Player = HexaCore.GetPlayer(source)
 
 if not Player then
     return
 end
 
-Player.Functions.AddMoney(
+Player.AddMoney(
     'cash',
     100,
     'example_reward'

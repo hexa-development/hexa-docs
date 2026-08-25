@@ -46,7 +46,7 @@ guarded differently.
 | `HexaCore:Server:RequestSpawn` | none | yes, by design | Re-entry flag per source, replays the last spawn if already logged in |
 | `HexaCore:Server:OnPlayerLoaded` | none | yes, by design | Money-item reconciliation runs once per session per source |
 | `HexaCore:Server:RequestStatus` | none | yes, by design | Read-only, answers only to the caller |
-| `HexaCore:Server:SetMetaData` | `meta` (string), `data` (number or boolean) | yes, allowlisted | Only `hunger`, `thirst`, `cleanliness`, `stress` are accepted |
+| `HexaCore:Server:SetMetaData` | `meta` (string), `data` (number or boolean) | yes, allowlisted | Only keys in `Config.Status.Keys` are accepted |
 | `HexaCore:ToggleDuty` | none | yes | None beyond "must have a character loaded" |
 | `HexaCore:CallCommand` | `command` (string), `args` (table) | yes | `Core.HasPermission(src, 'command.' .. name)` |
 | `HexaCore:Server:TriggerCallback` | `name` (string), `...` | yes, by design | The callback body is responsible for its own checks |
@@ -66,8 +66,8 @@ spawn data instead of returning silently.
 
 ### HexaCore:Server:SetMetaData
 
-The only metadata keys a client may write are the four body-status keys. Anything else is refused
-and logged with the source id.
+The only metadata keys a client may write are those in `Config.Status.Keys`. Anything else is refused
+and logged with the source id. Keep the list limited to values a player is allowed to report.
 
 ```lua
 -- allowed from the client

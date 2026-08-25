@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 
 const SITE_URL = 'https://hexa-development.github.io/hexa-docs/'
 const REPO = 'https://github.com/hexa-development/hexa_core'
+const BRIDGE_REPO = 'https://github.com/hexa-development/hexa-bridge'
 
 const enGuide = [
   {
@@ -35,6 +36,17 @@ const enApi = [
       { text: 'Exports', link: '/api/exports' },
       { text: 'Events', link: '/api/events' },
       { text: 'Commands', link: '/api/commands' }
+    ]
+  }
+]
+
+const enBridge = [
+  {
+    text: 'Compatibility bridges',
+    items: [
+      { text: 'Overview and installation', link: '/bridge/' },
+      { text: 'RSG Core compatibility', link: '/bridge/rsg-core' },
+      { text: 'VORP Core compatibility', link: '/bridge/vorp-core' }
     ]
   }
 ]
@@ -75,6 +87,17 @@ const thApi = [
   }
 ]
 
+const thBridge = [
+  {
+    text: 'Compatibility bridge',
+    items: [
+      { text: 'ภาพรวมและการติดตั้ง', link: '/th/bridge/' },
+      { text: 'ความเข้ากันได้กับ RSG Core', link: '/th/bridge/rsg-core' },
+      { text: 'ความเข้ากันได้กับ VORP Core', link: '/th/bridge/vorp-core' }
+    ]
+  }
+]
+
 export default defineConfig({
   title: 'Hexa Framework',
   description:
@@ -105,7 +128,7 @@ export default defineConfig({
       operatingSystem: 'RedM (FXServer)',
       description: 'The core framework for RedM roleplay servers - players, jobs, items, money, callbacks, and permissions in one flat API',
       url: SITE_URL,
-      sameAs: [REPO]
+      sameAs: [REPO, BRIDGE_REPO]
     })]
   ],
 
@@ -117,9 +140,10 @@ export default defineConfig({
         nav: [
           { text: 'Guide', link: '/guide/introduction' },
           { text: 'API', link: '/api/server-functions' },
+          { text: 'Bridge', link: '/bridge/' },
           { text: 'GitHub', link: REPO }
         ],
-        sidebar: { '/guide/': enGuide, '/api/': enApi },
+        sidebar: { '/guide/': enGuide, '/api/': enApi, '/bridge/': enBridge },
         outline: { label: 'On this page', level: [2, 3] },
         docFooter: { prev: 'Previous', next: 'Next' },
         lastUpdatedText: 'Last updated',
@@ -138,9 +162,10 @@ export default defineConfig({
         nav: [
           { text: 'คู่มือ', link: '/th/guide/introduction' },
           { text: 'API', link: '/th/api/server-functions' },
+          { text: 'Bridge', link: '/th/bridge/' },
           { text: 'GitHub', link: REPO }
         ],
-        sidebar: { '/th/guide/': thGuide, '/th/api/': thApi },
+        sidebar: { '/th/guide/': thGuide, '/th/api/': thApi, '/th/bridge/': thBridge },
         outline: { label: 'ในหน้านี้', level: [2, 3] },
         docFooter: { prev: 'หน้าก่อนหน้า', next: 'หน้าถัดไป' },
         lastUpdatedText: 'อัปเดตล่าสุด',

@@ -43,7 +43,7 @@ Two older shapes are kept because server code already used them. They take a res
 a format string, and they now exist on both sides:
 
 ```lua
-Core.ShowError(GetCurrentResourceName(), 'config.lua has no Config.Money.MoneyTypes')
+Core.ShowError(GetCurrentResourceName(), 'config/money.lua has no Config.Money.MoneyTypes')
 Core.ShowSuccess(GetCurrentResourceName(), 'loaded 12 shop locations')
 ```
 
@@ -87,7 +87,7 @@ Core.PrintDebug('inventory sync ' .. citizenid .. ' ' .. json.encode(payload))
 ```
 
 ::: tip
-`Config.Debug` lives in `hexa_core/config.lua` and ships as `false`. It is a single switch for the
+`Config.Debug` lives in `hexa_core/config/main.lua` and ships as `false`. It is a single switch for the
 whole framework - turning it on makes every `[DEBUG]` line in every hexa resource appear at once.
 :::
 
