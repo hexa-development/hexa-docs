@@ -333,7 +333,7 @@ API
 | [`hexa-bridge`](https://github.com/hexa-development/hexa-bridge) | Compatibility layer for supported RSG and VORP resources |
 | **`hexa-docs`** | Official documentation and API reference (VitePress) <br> *(this repository)* |
 | [`rdr2-unpack`](https://github.com/hexa-development/rdr2-unpack) | Read a local RDR2 install into open formats — GLB, PNG, `.ymap` JSON |
-| [`txAdmin`](https://github.com/hexa-development/txAdmin) | txAdmin deployment recipe for a Hexa server *(work in progress)* |
+| [`txAdmin`](https://github.com/hexa-development/txAdmin) | One-click txAdmin recipe that deploys the whole Hexa stack |
 
 Live site: [hexa-development.github.io/hexa-docs](https://hexa-development.github.io/hexa-docs/) · [เอกสารภาษาไทย](https://hexa-development.github.io/hexa-docs/th/)
 
