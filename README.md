@@ -321,15 +321,21 @@ API
 
 ---
 
-## Ecosystem
+## Hexa Ecosystem
 
-`hexa-docs` documents the wider Hexa ecosystem.
+`hexa-docs` is the single source of truth for every repository below.
 
-| Project                                                          | Description                                              |
-| :--------------------------------------------------------------- | :------------------------------------------------------- |
-| [`hexa_core`](https://github.com/hexa-development/hexa_core)     | Core framework for RedM roleplay servers                 |
+| Project | Description |
+| :--- | :--- |
+| [`hexa_core`](https://github.com/hexa-development/hexa_core) | Core framework — players, jobs, items, economy, status, callbacks, permissions |
+| [`hexa_inventory`](https://github.com/hexa-development/hexa_inventory) | Persistent grid inventory — stashes, shops, ground drops, secure trading |
+| [`hexa_progbar`](https://github.com/hexa-development/hexa_progbar) | Screen-fixed progress bar — drop-in for `ox_lib` `progressBar` |
 | [`hexa-bridge`](https://github.com/hexa-development/hexa-bridge) | Compatibility layer for supported RSG and VORP resources |
-| [`hexa-docs`](https://github.com/hexa-development/hexa-docs)     | Official documentation and API reference                 |
+| **`hexa-docs`** | Official documentation and API reference (VitePress) <br> *(this repository)* |
+| [`rdr2-unpack`](https://github.com/hexa-development/rdr2-unpack) | Read a local RDR2 install into open formats — GLB, PNG, `.ymap` JSON |
+| [`txAdmin`](https://github.com/hexa-development/txAdmin) | txAdmin deployment recipe for a Hexa server *(work in progress)* |
+
+Live site: [hexa-development.github.io/hexa-docs](https://hexa-development.github.io/hexa-docs/) · [เอกสารภาษาไทย](https://hexa-development.github.io/hexa-docs/th/)
 
 ---
 
@@ -382,22 +388,6 @@ Automatic Deployment
 
 ---
 
-## Related Projects
-
-### Hexa Core
-
-The foundation of the Hexa ecosystem.
-
-[github.com/hexa-development/hexa_core](https://github.com/hexa-development/hexa_core)
-
-### Hexa Bridge
-
-Compatibility bridges for running supported resources from other RedM frameworks on Hexa.
-
-[github.com/hexa-development/hexa-bridge](https://github.com/hexa-development/hexa-bridge)
-
----
-
 <div align="center">
 
 ### Documentation should answer the question before Discord has to.
@@ -407,8 +397,11 @@ Compatibility bridges for running supported resources from other RedM frameworks
 <br>
 
 [Documentation](https://hexa-development.github.io/hexa-docs/) ·
-[Hexa Core](https://github.com/hexa-development/hexa_core) ·
-[Hexa Bridge](https://github.com/hexa-development/hexa-bridge) ·
-[GitHub](https://github.com/hexa-development)
+[เอกสารภาษาไทย](https://hexa-development.github.io/hexa-docs/th/) ·
+[hexa_core](https://github.com/hexa-development/hexa_core) ·
+[hexa_inventory](https://github.com/hexa-development/hexa_inventory) ·
+[hexa_progbar](https://github.com/hexa-development/hexa_progbar) ·
+[hexa-bridge](https://github.com/hexa-development/hexa-bridge) ·
+[Organization](https://github.com/hexa-development)
 
 </div>
